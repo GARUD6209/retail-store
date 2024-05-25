@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DBUtil {
 	private final String USERNAME = "root";
-	private final String PASSWORD = "1234";
+	private final String PASSWORD = "ika1234";
 	private final String URL = "jdbc:mysql://localhost:3306/retail_store";
 	private final String DRIVER = "com.mysql.cj.jdbc.Driver";
 

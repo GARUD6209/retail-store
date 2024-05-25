@@ -156,7 +156,7 @@ public class UserServlet extends HttpServlet {
 			userDTO.setGstNumber(request.getParameter("gst-number"));
 			userDTO.setAddress(request.getParameter("address"));
 
-			int count = userService.save(userDTO);
+			int count = userService.update(userDTO);
 
 			if (count > 0) {
 				System.out.println("User updated successfully");
@@ -207,7 +207,7 @@ public class UserServlet extends HttpServlet {
 	            RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
 	            
 	            request.setAttribute("userDTOEdit", userDTO);
-//	            request.setAttribute("redirectUrl","updateStore.jsp");
+//	            
 	           
 	            dispatcher.forward(request, response);
 				

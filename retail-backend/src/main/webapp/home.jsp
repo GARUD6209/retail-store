@@ -8,10 +8,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <% UserDTO userDTO = (UserDTO)request.getAttribute("loginUserDTO"); %>
 	<form action="user" method = "get">
 		<input type = "hidden" name = "task" value = "findById">
-		<input type = "text" name = "id" value = "<%=userDTO.getId()%>">
+		<input type = "text" name = "id" value = "1">
 		<button type = "submit">Edit</button>
 	</form>
 	
@@ -25,11 +26,11 @@
 		<form action="user" method = "post">
 			<input type = "hidden" name = "task" value = "updateById">
 			<input type = "text" name = "id" value = "<%=userDTOEdit.getId() %>">
-			<input type = "text" name = "id" value = "<%=userDTOEdit.getName() %>">
-			<input type = "text" name = "id" value = "<%=userDTOEdit.getAddress() %>">
-			<input type = "text" name = "id" value = "<%=userDTOEdit.getMobile_number()%>">
-			<input type = "text" name = "id" value = "<%=userDTOEdit.getEmail() %>">
-			<input type = "text" name = "id" value = "<%=userDTOEdit.getGstNumber()%>">		
+			<input type = "text" name = "name" value = "<%=userDTOEdit.getName() %>">
+			<input type = "text" name = "address" value = "<%=userDTOEdit.getAddress() %>">
+			<input type = "text" name = "mobile-number" value = "<%=userDTOEdit.getMobile_number()%>">
+			<input type = "text" name = "email" value = "<%=userDTOEdit.getEmail() %>">
+			<input type = "text" name = "gst-number" value = "<%=userDTOEdit.getGstNumber()%>">		
 			<button type = "submit">update</button>
 		</form>
 	

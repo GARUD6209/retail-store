@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import com.amstech.retail.dao.ItemDAO;
 import com.amstech.retail.dto.ItemDTO;
@@ -32,7 +33,7 @@ public class ItemServlet extends HttpServlet {
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
+		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,7 +47,7 @@ public class ItemServlet extends HttpServlet {
 	}
 
 	public void destroy() {
-		// TODO Auto-generated method stub
+	
 	}
 
 	public void save(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -79,7 +80,7 @@ public class ItemServlet extends HttpServlet {
 				System.out.println("Failed to create item data..");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 				request.setAttribute("status", "error");
-				request.setAttribute("message", "Failed to create create data..");
+				request.setAttribute("message", "Failed to create item data..");
 				request.setAttribute("redirectURL", "item.jsp");
 
 				dispatcher.forward(request, response);
@@ -107,7 +108,7 @@ public class ItemServlet extends HttpServlet {
 		    itemDTO.setDescription(request.getParameter("description"));
 		   
 		    itemDTO.setCurrent_price(Integer.parseInt(request.getParameter("current-price")));
-			int count = itemService.save(itemDTO);
+			int count = itemService.update(itemDTO);
 
 			if (count > 0) {
 				System.out.println("item updated successfully");
@@ -119,7 +120,7 @@ public class ItemServlet extends HttpServlet {
 				dispatcher.forward(request, response);
 
 			} else {
-				System.out.println("Failed to create item data..");
+				System.out.println("Failed to update item data..");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 				request.setAttribute("status", "error");
 				request.setAttribute("message", "Failed to update item data..");
@@ -132,11 +133,82 @@ public class ItemServlet extends HttpServlet {
 			e.printStackTrace();
 			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 			request.setAttribute("status", "error");
-			request.setAttribute("message", "Server Failed " + e.getMessage());
+			request.setAttribute("message", "Server Failed to update item due to" + e.getMessage());
 			request.setAttribute("redirectURL", "item.jsp");
 
 			dispatcher.forward(request, response);
 		}
 	}
+	
+	public void findById(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		try {
+			ItemDTO itemDTO= itemService.findById(Integer.parseInt(request.getParameter("itemId")));
+
+		
+			if (itemDTO !=null) {
+				System.out.println("itemDTO OBJECT IS NOT EMPTY");
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
+				 
+				request.setAttribute("itemDTOFindById", itemDTO);
+
+				dispatcher.forward(request, response);
+
+			} else {
+				System.out.println("Failed to find item data..");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+				request.setAttribute("status", "error");
+				request.setAttribute("message", "Failed to find item data..");
+				request.setAttribute("redirectURL", "item.jsp");
+
+				dispatcher.forward(request, response);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+			request.setAttribute("status", "error");
+			request.setAttribute("message", "Server Failed to find item due to" + e.getMessage());
+			request.setAttribute("redirectURL", "item.jsp");
+
+			dispatcher.forward(request, response);
+		}
+	}
+	
+	public void findByStoreInfoId(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		try {
+			List<ItemDTO> itemDTOList= itemService.findByStoreInfoId(Integer.parseInt(request.getParameter("storeInfoId")));
+
+		
+			if (!itemDTOList.isEmpty()) {
+				System.out.println("itemDTO OBJECT IS NOT EMPTY");
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
+				 
+				request.setAttribute("itemDTOList", itemDTOList);
+
+				dispatcher.forward(request, response);
+
+			} else {
+				System.out.println("Failed to find itemList data..");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+				request.setAttribute("status", "error");
+				request.setAttribute("message", "Failed to find itemList data..");
+				request.setAttribute("redirectURL", "item.jsp");
+
+				dispatcher.forward(request, response);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+			request.setAttribute("status", "error");
+			request.setAttribute("message", "Server Failed to find itemList due to" + e.getMessage());
+			request.setAttribute("redirectURL", "item.jsp");
+
+			dispatcher.forward(request, response);
+		}
+	}
+
 
 }

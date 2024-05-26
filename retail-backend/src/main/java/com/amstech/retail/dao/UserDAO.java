@@ -4,11 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-
 import com.amstech.retail.dto.UserDTO;
 import com.amstech.retail.util.DBUtil;
-
-
 
 public class UserDAO {
 
@@ -16,12 +13,9 @@ public class UserDAO {
 
 	private final String STORE_INFO_UPDATE_DATA = "update store_info set name = ?, mobile_number = ?, email = ?, gst_number = ?, address = ?,update_datetime = now() where id = ?";
 
-
-
 	private final String STORE_INFO_FIND_BY_MOBILE_EMAIL_PASSWORD = "select * from store_info where (mobile_number=? or email=?) ";
-	
-	private final String STORE_INFO_FIND_BY_ID="select * from store_info where id = ?";
 
+	private final String STORE_INFO_FIND_BY_ID = "select * from store_info where id = ?";
 
 	private DBUtil dbUtil;
 
@@ -44,18 +38,17 @@ public class UserDAO {
 			// step 2 prepared statement
 
 			pstmt = connection.prepareStatement(STORE_INFO_INSERT_DATA);
-			
+
 			pstmt.setInt(1, userDTO.getCityID());
 			pstmt.setString(2, userDTO.getName());
-			
+
 			pstmt.setString(3, userDTO.getMobile_number());
 			pstmt.setString(4, userDTO.getEmail());
 			pstmt.setString(5, userDTO.getGstNumber());
-			
+
 			pstmt.setString(6, userDTO.getAddress());
-			
+
 			pstmt.setString(7, userDTO.getPassword());
-		
 
 			// step 3 execution
 
@@ -83,14 +76,14 @@ public class UserDAO {
 
 			pstmt = connection.prepareStatement(STORE_INFO_UPDATE_DATA);
 
-            pstmt.setString(1, userDTO.getName());
-			
+			pstmt.setString(1, userDTO.getName());
+
 			pstmt.setString(2, userDTO.getMobile_number());
 			pstmt.setString(3, userDTO.getEmail());
 			pstmt.setString(4, userDTO.getGstNumber());
-			
+
 			pstmt.setString(5, userDTO.getAddress());
-		
+
 			pstmt.setInt(6, userDTO.getId());
 
 			return pstmt.executeUpdate();
@@ -102,6 +95,7 @@ public class UserDAO {
 		}
 
 	}
+
 	public UserDTO findById(int id) throws Exception {
 		Connection connection = null;
 
@@ -116,20 +110,17 @@ public class UserDAO {
 
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
- 
-			
-
 
 			if (rs.next()) {
-			
+
 				userDTO = new UserDTO();
-                userDTO.setId(rs.getInt("id"));
+				userDTO.setId(rs.getInt("id"));
 				userDTO.setName(rs.getString("name"));
 				userDTO.setMobile_number(rs.getString("mobile_number"));
-			    userDTO.setAddress(rs.getString("address"));
-			    userDTO.setEmail(rs.getString("email"));
-			    userDTO.setGstNumber(rs.getString("gst_number"));
-			
+				userDTO.setAddress(rs.getString("address"));
+				userDTO.setEmail(rs.getString("email"));
+				userDTO.setGstNumber(rs.getString("gst_number"));
+
 			}
 
 			return userDTO;
@@ -143,9 +134,6 @@ public class UserDAO {
 
 	}
 
-	
-
-	
 	public UserDTO findByUsernameAndPassword(String username) throws Exception {
 		Connection connection = null;
 
@@ -160,10 +148,8 @@ public class UserDAO {
 
 			pstmt.setString(1, username);
 			pstmt.setString(2, username);
-			
 
 			ResultSet rs = pstmt.executeQuery();
-			
 
 			if (rs.next()) {
 				userDTO = new UserDTO();
@@ -172,7 +158,6 @@ public class UserDAO {
 				userDTO.setName(rs.getString("name"));
 				userDTO.setMobile_number(rs.getString("mobile_number"));
 				userDTO.setPassword(rs.getString("password"));
-
 
 			}
 
@@ -187,7 +172,4 @@ public class UserDAO {
 
 	}
 
-	
-
-	
 }

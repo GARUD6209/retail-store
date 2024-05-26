@@ -17,7 +17,7 @@ import com.amstech.retail.service.ItemService;
 import com.amstech.retail.util.DBUtil;
 
 
-@WebServlet("/item")
+@WebServlet("/items")
 public class ItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -38,12 +38,26 @@ public class ItemServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String task = request.getParameter("task");
+		System.out.println(task);
 
+		if (task.equalsIgnoreCase("itemFindById")) {
+			findById(request, response);
+		}  else {
+			System.out.println("method not found");
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String task = request.getParameter("task");
+		System.out.println(task);
 
+		if (task.equalsIgnoreCase("addItem")) {
+			save(request, response);
+		}  else {
+			System.out.println("method not found");
+		}
 	}
 
 	public void destroy() {
@@ -53,9 +67,9 @@ public class ItemServlet extends HttpServlet {
 	public void save(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 		try {
-			int storeInfoId = Integer.parseInt(request.getParameter("storeInfoID"));
+			int storeInfoId = Integer.parseInt(request.getParameter("storeInfoId"));
 			String name = request.getParameter("name");
-			double current_price = Integer.parseInt(request.getParameter("current-price"));
+			double current_price = Double.parseDouble(request.getParameter("current-price"));
 
 			String description = request.getParameter("description");
 			

@@ -16,7 +16,7 @@
 		<button type = "submit">Edit</button>
 	</form>
 	
-	
+	<a href= "item.jsp">add items</a>
 	
 </body>
 </html>

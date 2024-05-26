@@ -204,9 +204,11 @@ public class UserServlet extends HttpServlet {
 				System.out.println("user id :" + userDTO.getGstNumber());
 				System.out.println("user found successfully");
 			
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
+	            RequestDispatcher dispatcher = request.getRequestDispatcher("updateStore.jsp");
 	            
+
 	            request.setAttribute("userDTOEdit", userDTO);
+//	            request.setAttribute("updateStore.jsp", response);
 //	            
 	           
 	            dispatcher.forward(request, response);

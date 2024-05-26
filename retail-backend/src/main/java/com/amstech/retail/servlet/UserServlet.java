@@ -41,7 +41,7 @@ public class UserServlet extends HttpServlet {
 		String task = request.getParameter("task");
 		System.out.println(task);
 
-		if (task.equalsIgnoreCase("findById")) {
+		if (task.equalsIgnoreCase("findById")||task.equalsIgnoreCase("itemAddById")) {
 			findById(request, response);
 		}  else {
 			System.out.println("method not found");
@@ -203,15 +203,29 @@ public class UserServlet extends HttpServlet {
 				System.out.println("user id :" + userDTO.getEmail());
 				System.out.println("user id :" + userDTO.getGstNumber());
 				System.out.println("user found successfully");
+				
+				
 			
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("updateStore.jsp");
+	           if (request.getParameter("task").equalsIgnoreCase("findById")){
+	        	   RequestDispatcher dispatcher = request.getRequestDispatcher("updateStore.jsp");
+	        	   
+	               request.setAttribute("userDTOEdit", userDTO);
+
+		           
+		            dispatcher.forward(request, response);
+			}else if(request.getParameter("task").equalsIgnoreCase("itemAddById")){
+				 RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
+			       request.setAttribute("userDTOEdit", userDTO);
+
+		           
+		            dispatcher.forward(request, response);
+			}
+	           
+			
+	            
 	            
 
-	            request.setAttribute("userDTOEdit", userDTO);
-//	            request.setAttribute("updateStore.jsp", response);
-//	            
-	           
-	            dispatcher.forward(request, response);
+	     
 				
 				
 				

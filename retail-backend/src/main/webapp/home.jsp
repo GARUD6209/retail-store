@@ -14,9 +14,19 @@
 		<input type = "hidden" name = "task" value = "findById">
 		<input type = "text" name = "id" value = "1">
 		<button type = "submit">Edit</button>
+		
+		
 	</form>
 	
-	<a href= "item.jsp">add items</a>
+	<form action="user" method = "get">
+		<input type = "hidden" name = "task" value = "itemAddById">
+		<input type = "text" name = "id" value = "1">
+		<button type = "submit">add item</button>
+		
+		
+	</form>
+	
+	
 	
 </body>
 </html>

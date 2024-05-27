@@ -11,6 +11,7 @@ public class ItemDTO {
 	private String description;
 	private Timestamp createDateTime;
 	private Timestamp updateDateTime;
+	
 	public int getId() {
 		return id;
 	}
@@ -52,11 +53,5 @@ public class ItemDTO {
 	}
 	public void setUpdateDateTime(Timestamp updateDateTime) {
 		this.updateDateTime = updateDateTime;
-	}
-	
-	
-	
-	
-	
-	
+	}	
 }

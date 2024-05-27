@@ -16,7 +16,6 @@ import com.amstech.retail.service.ItemService;
 
 import com.amstech.retail.util.DBUtil;
 
-
 @WebServlet("/items")
 public class ItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -33,7 +32,7 @@ public class ItemServlet extends HttpServlet {
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-		
+
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,9 +40,11 @@ public class ItemServlet extends HttpServlet {
 		String task = request.getParameter("task");
 		System.out.println(task);
 
-		if (task.equalsIgnoreCase("itemFindById")) {
+		if (task.equalsIgnoreCase("findItemById")) {
 			findById(request, response);
-		}  else {
+		} else if (task.equalsIgnoreCase("findAllItems")) {
+			findByStoreInfoId(request, response);
+		} else {
 			System.out.println("method not found");
 		}
 	}
@@ -55,14 +56,19 @@ public class ItemServlet extends HttpServlet {
 
 		if (task.equalsIgnoreCase("addItem")) {
 			save(request, response);
-			
-		}  else {
+
+		} else if (task.equalsIgnoreCase("updateById")) {
+			update(request, response);
+		} else {
 			System.out.println("method not found");
 		}
+		
 	}
 
-	public void destroy() {
 	
+
+	public void destroy() {
+
 	}
 
 	public void save(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -73,13 +79,13 @@ public class ItemServlet extends HttpServlet {
 			double current_price = Double.parseDouble(request.getParameter("current-price"));
 
 			String description = request.getParameter("description");
-			
+
 			ItemDTO itemDTO = new ItemDTO();
 			itemDTO.setStoreInfoId(storeInfoId);
 			itemDTO.setName(name);
 			itemDTO.setCurrent_price(current_price);
 			itemDTO.setDescription(description);
-			
+
 			int count = itemService.save(itemDTO);
 			if (count > 0) {
 				System.out.println("item created successfully");
@@ -89,9 +95,8 @@ public class ItemServlet extends HttpServlet {
 				request.setAttribute("redirectURL", "item.jsp");
 
 				dispatcher.forward(request, response);
-			}
-			else {
-			
+			} else {
+
 				System.out.println("Failed to create item data..");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 				request.setAttribute("status", "error");
@@ -105,14 +110,13 @@ public class ItemServlet extends HttpServlet {
 			System.out.println("Failed to create item data..");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 			request.setAttribute("status", "error");
-			request.setAttribute("message", "Failed to create item data.." +e.getMessage());
+			request.setAttribute("message", "Failed to create item data.." + e.getMessage());
 			request.setAttribute("redirectURL", "item.jsp");
 
 			dispatcher.forward(request, response);
 
 		}
 	}
-	
 
 	public void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
@@ -120,9 +124,9 @@ public class ItemServlet extends HttpServlet {
 			ItemDTO itemDTO = new ItemDTO();
 
 			itemDTO.setName(request.getParameter("name"));
-		    itemDTO.setDescription(request.getParameter("description"));
-		   
-		    itemDTO.setCurrent_price(Integer.parseInt(request.getParameter("current-price")));
+			itemDTO.setDescription(request.getParameter("description"));
+			itemDTO.setCurrent_price(Double.parseDouble(request.getParameter("current-price")));
+			itemDTO.setId(Integer.parseInt(request.getParameter("itemId")));
 			int count = itemService.update(itemDTO);
 
 			if (count > 0) {
@@ -154,18 +158,18 @@ public class ItemServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 		}
 	}
-	
-	public void findById(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		try {
-			ItemDTO itemDTO= itemService.findById(Integer.parseInt(request.getParameter("itemId")));
 
-		
-			if (itemDTO !=null) {
+	public void findById(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		try {
+			ItemDTO itemDTO = itemService.findById(Integer.parseInt(request.getParameter("itemId")));
+
+			if (itemDTO != null) {
 				System.out.println("itemDTO OBJECT IS NOT EMPTY");
-				
+
 				RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
-				 
-				request.setAttribute("itemDTOFindById", itemDTO);
+
+				request.setAttribute("editItemDTO", itemDTO);
 
 				dispatcher.forward(request, response);
 
@@ -189,17 +193,17 @@ public class ItemServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 		}
 	}
-	
-	public void findByStoreInfoId(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		try {
-			List<ItemDTO> itemDTOList= itemService.findByStoreInfoId(Integer.parseInt(request.getParameter("storeInfoId")));
 
-		
+	public void findByStoreInfoId(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		try {
+			List<ItemDTO> itemDTOList = itemService.findByStoreInfoId(Integer.parseInt(request.getParameter("id")));
+
 			if (!itemDTOList.isEmpty()) {
 				System.out.println("itemDTO OBJECT IS NOT EMPTY");
-				
+
 				RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
-				 
+
 				request.setAttribute("itemDTOList", itemDTOList);
 
 				dispatcher.forward(request, response);
@@ -224,6 +228,5 @@ public class ItemServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 		}
 	}
-
 
 }

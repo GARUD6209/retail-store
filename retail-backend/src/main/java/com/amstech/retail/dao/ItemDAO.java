@@ -25,7 +25,7 @@ public class ItemDAO {
 //	
 
 	private final String ITEM_INSERT_DATA = "insert into item (store_info_id,name,current_price,description,create_datetime,update_datetime) value (?,?,?,?,now(),now())";
-	private final String ITEM_UPDATE_DATA = "update item set name=?,current_price=?,description=?,update_datatime=now()";
+	private final String ITEM_UPDATE_DATA = "update item set name=?,current_price=?,description=?,update_datetime=now() where id = ?";
 	private final String ITEM_FIND_BY_ID = "select * from item where id =?";
 	private final String ITEM_FIND_BY_STORE_INFO_ID = "select * from item where store_info_id =?";
 
@@ -87,6 +87,7 @@ public class ItemDAO {
 
 			pstmt.setDouble(2, itemDTO.getCurrent_price());
 			pstmt.setString(3, itemDTO.getDescription());
+			pstmt.setInt(4, itemDTO.getId());
 
 			return pstmt.executeUpdate();
 
@@ -120,9 +121,7 @@ public class ItemDAO {
 				itemDTO.setName(rs.getString("name"));
 				itemDTO.setDescription(rs.getString("description"));
 				itemDTO.setCurrent_price(rs.getDouble("current_price"));
-				
-				
-
+		
 			}
 
 			return itemDTO;

@@ -37,7 +37,7 @@
 	}
 	%>
 	
-	<%  List<ItemDTO> itemDTOList = (List) request.getAttribute("itemDTOList");%>	
+	
 	<table>		
 		<thead>
 			<tr>
@@ -48,10 +48,11 @@
 				<th>store id</th>
 			</tr>
 		</thead>
+	
+			<%  List<ItemDTO> itemDTOList = (List) request.getAttribute("itemDTOList");%>	
 		<%if(itemDTOList != null && !itemDTOList.isEmpty()){
 			for(ItemDTO itemDTO : itemDTOList){
 		%>
-			
 		<tbody>		
 			<tr>		
 				<td><%=itemDTO.getId() %></td>
@@ -64,6 +65,11 @@
 						<input type = "hidden" name = "task" value = "findItemById">
 						<input type = "hidden" name = "itemId" value = "<%=itemDTO.getId()%>">
 						<button type = "submit">edit</button>
+					</form>
+					<form action = "items" method = "get">
+						<input type = "hidden" name = "task" value = "deleteItemById">
+						<input type = "hidden" name = "itemId" value = "<%=itemDTO.getId()%>">
+						<button type = "submit">delete</button>
 					</form>
 				</td>
 			</tr>

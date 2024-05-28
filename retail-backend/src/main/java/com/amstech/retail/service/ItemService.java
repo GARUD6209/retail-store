@@ -38,5 +38,9 @@ public class ItemService {
 
 		return itemDAO.findByStoreInfoId(storeInfoId);
 	}
+	
+	public int deleteById(ItemDTO itemDTO) throws Exception {
+		return itemDAO.deleteById(itemDTO);
+	}
 
 }

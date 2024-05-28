@@ -28,6 +28,7 @@ public class ItemDAO {
 	private final String ITEM_UPDATE_DATA = "update item set name=?,current_price=?,description=?,update_datetime=now() where id = ?";
 	private final String ITEM_FIND_BY_ID = "select * from item where id =?";
 	private final String ITEM_FIND_BY_STORE_INFO_ID = "select * from item where store_info_id =?";
+	private final String ITEM_DELETE_BY_ID = "delete from item where id = ?";
 
 	private DBUtil dbUtil;
 
@@ -155,19 +156,46 @@ public class ItemDAO {
 			pstmt.setInt(1, storeInfoId);
 			ResultSet rs = pstmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 
 				itemDTO = new ItemDTO();
 				itemDTO.setId(rs.getInt("id"));
 				itemDTO.setName(rs.getString("name"));
 				itemDTO.setDescription(rs.getString("description"));
 				itemDTO.setCurrent_price(rs.getDouble("current_price"));
+				itemDTO.setStoreInfoId(rs.getInt("store_info_id"));
 				itemDTOList.add(itemDTO);
 				
 
 			}
 
 			return itemDTOList;
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			dbUtil.getClose(connection, pstmt);
+		}
+
+	}
+	
+	public int deleteById(ItemDTO itemDTO) throws Exception {
+		Connection connection = null;
+
+		PreparedStatement pstmt = null;		
+
+		try {
+			
+			
+			connection = dbUtil.getConnection();
+			
+
+			pstmt = connection.prepareStatement(ITEM_DELETE_BY_ID);
+
+			pstmt.setInt(1, itemDTO.getId());
+			int count = pstmt.executeUpdate();			
+
+			return count;
 
 		} catch (Exception e) {
 			throw e;

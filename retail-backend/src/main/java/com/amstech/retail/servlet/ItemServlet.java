@@ -44,6 +44,8 @@ public class ItemServlet extends HttpServlet {
 			findById(request, response);
 		} else if (task.equalsIgnoreCase("findAllItems")) {
 			findByStoreInfoId(request, response);
+		} else if (task.equalsIgnoreCase("deleteItemById")) {
+			deleteById(request, response);
 		} else {
 			System.out.println("method not found");
 		}
@@ -59,7 +61,9 @@ public class ItemServlet extends HttpServlet {
 
 		} else if (task.equalsIgnoreCase("updateById")) {
 			update(request, response);
-		} else {
+		} else if (task.equalsIgnoreCase("deleteById")) {
+			deleteById(request, response);
+		}  else {
 			System.out.println("method not found");
 		}
 		
@@ -223,6 +227,40 @@ public class ItemServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 			request.setAttribute("status", "error");
 			request.setAttribute("message", "Server Failed to find itemList due to" + e.getMessage());
+			request.setAttribute("redirectURL", "item.jsp");
+
+			dispatcher.forward(request, response);
+		}
+	}
+	
+	public void deleteById(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		
+		try {
+			ItemDTO itemDTO = new ItemDTO();
+			itemDTO.setId(Integer.parseInt(request.getParameter("itemId")));
+			int count = itemService.deleteById(itemDTO);
+			if(count > 0) {
+				System.out.println("Item deleted Successfully");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+				request.setAttribute("status", "success");
+				request.setAttribute("message", "item deleted successfully" );
+				request.setAttribute("redirectURL", "item.jsp");
+				dispatcher.forward(request, response);
+			}else {
+				System.out.println("Failed to find itemList data..");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+				request.setAttribute("status", "error");
+				request.setAttribute("message", "Failed to delete item data..");
+				request.setAttribute("redirectURL", "item.jsp");
+
+				dispatcher.forward(request, response);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+			request.setAttribute("status", "error");
+			request.setAttribute("message", "Server Failed to delete item due to" + e.getMessage());
 			request.setAttribute("redirectURL", "item.jsp");
 
 			dispatcher.forward(request, response);

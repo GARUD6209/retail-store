@@ -20,14 +20,20 @@
 	
 	<form action="user" method = "get">
 		<input type = "hidden" name = "task" value = "itemAddById">
-		<input type = "text" name = "id" value = "<%=userDTO.getId()%>">
+		<input type = "hidden" name = "id" value = "<%=userDTO.getId()%>">
 		<button type = "submit">add item</button>		
 	</form>
 	
 	<form action="items" method = "get">
 		<input type = "hidden" name = "task" value = "findAllItems">
-		<input type = "text" name = "id" value = "<%=userDTO.getId()%>">
+		<input type = "hidden" name = "id" value = "<%=userDTO.getId()%>">
 		<button type = "submit">find All Items</button>		
+	</form>
+	
+<form action="user" method = "get">
+		<input type = "hidden" name = "task" value = "queryAddById">
+		<input type = "hidden" name = "id" value = "<%=userDTO.getId()%>">
+		<button type = "submit">Add Query</button>		
 	</form>
 	
 	

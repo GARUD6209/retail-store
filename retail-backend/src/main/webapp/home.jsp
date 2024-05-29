@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Home Page</title>
 </head>
 <body>
 
@@ -15,29 +15,30 @@
 		<input type = "hidden" name = "task" value = "findById">
 		<input type = "text" name = "id" value = "<%=userDTO.getId() %>">
 		<button type = "submit">Edit</button>
+		
+		
+	</form>
+	
+	<form action="user" method = "get">
+		<input type = "hidden" name = "task" value = "itemAddById">
+		<input type = "hidden" name = "id" value = "<%=userDTO.getId()%>">
+		<button type = "submit">add item</button>		
+	</form>
+	
+	<form action="items" method = "get">
+		<input type = "hidden" name = "task" value = "findAllItems">
+		<input type = "hidden" name = "id" value = "<%=userDTO.getId()%>">
+		<button type = "submit">find All Items</button>		
+	</form>
+	
+<form action="user" method = "get">
+		<input type = "hidden" name = "task" value = "queryAddById">
+		<input type = "hidden" name = "id" value = "<%=userDTO.getId()%>">
+		<button type = "submit">Add Query</button>		
 	</form>
 	
 	<%}%>
 	
-	 <%
-		UserDTO userDTOEdit = (UserDTO) request.getAttribute("userDTOEdit");
-		if (userDTOEdit != null) {
-		%>
-
-
-		<form action="user" method = "post">
-			<input type = "hidden" name = "task" value = "updateById">
-			<input type = "text" name = "id" value = "<%=userDTOEdit.getId() %>">
-			<input type = "text" name = "name" value = "<%=userDTOEdit.getName() %>">
-			<input type = "text" name = "address" value = "<%=userDTOEdit.getAddress() %>">
-			<input type = "text" name = "mobile-number" value = "<%=userDTOEdit.getMobile_number()%>">
-			<input type = "text" name = "email" value = "<%=userDTOEdit.getEmail() %>">
-			<input type = "text" name = "gst-number" value = "<%=userDTOEdit.getGstNumber()%>">		
-			<button type = "submit">update</button>
-		</form>
 	
-	<%
-	}
-	%>
 </body>
 </html>

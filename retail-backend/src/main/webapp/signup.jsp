@@ -7,213 +7,176 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign Up</title>
 <style>
-*, *:before, *:after {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
 body {
-    background-color: #080710;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+	margin: 30;
+	padding: 30;
+	font-family: Roboto, sans-serif;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background: linear-gradient(120deg, #007bff, #d0314c);
+	height: 100vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-h2 {
-    text-align: center;
-    font-size: 32px;
-    font-weight: 500;
-    color: #ffffff;
-    margin-bottom: 20px;
+.center {
+	position: absolute;
+	top: 60%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 25vw;
+	background: white;
+	border-radius: 10px;
+	padding: 20px 20px;
 }
 
-form {
-    margin-top: 20px;
-    height: auto;
-    width: 100%;
-    max-width: 500px;
-    background-color: rgba(255, 255, 255, 0.13);
-    position: relative;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-    padding: 50px 35px;
+.center h1 {
+	text-align: center;
+	padding: 0 0 20px 0;
+	border-bottom: 1px solid silver;
 }
 
-form * {
-    font-family: 'Poppins', sans-serif;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-    outline: none;
-    border: none;
+.center form {
+	padding: 0 30px;
+	box-sizing: border-box;
 }
 
-form h3 {
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 42px;
-    text-align: center;
+form .txt_field {
+	position: relative;
+	border-bottom: 2px solid #adadad;
+	margin: 20px 0;
 }
 
-label {
-    display: block;
-    margin-top: 30px;
-    font-size: 16px;
-    font-weight: 500;
+.txt_field input {
+	width: 100%;
+	padding: 0 5px;
+	height: 40px;
+	font-size: 16px;
+	border: none;
+	background: none;
+	outline: none;
 }
 
-input {
-    display: block;
-    height: 50px;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.07);
-    border-radius: 3px;
-    padding: 0 10px;
-    margin-top: 8px;
-    font-size: 14px;
-    font-weight: 300;
+.txt_field label {
+	position: absolute;
+	top: 50%;
+	left: 5px;
+	color: #adadad;
+	transform: translateY(-50%);
+	font-size: 16px;
+	pointer-events: none;
 }
 
-::placeholder {
-    color: #e5e5e5;
+.txt_field span::before {
+	content: '';
+	position: absolute;
+	top: 40px;
+	left: 0;
+	width: 0px;
+	height: 2px;
+	background: #2691d9;
+	transition: .5s;
 }
 
-button {
-    margin-top: 50px;
-    width: 100%;
-    background-color: #ffffff;
-    color: #080710;
-    padding: 15px 0;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 5px;
-    cursor: pointer;
+.txt_field input:focus ~ label, .txt_field input:valid ~ label {
+	top: -5px;
+	color: #2691d9;
 }
 
-input[type="submit"]:hover {
-    background-color: #e5e5e5;
+.txt_field input:focus ~ span::before, .txt_field input:valid ~ span::before
+	{
+	width: 100%;
 }
 
-.form-link {
-    text-align: center;
-    margin-top: 20px;
-    color: #ffffff;
+input[type="Submit"] {
+	width: 100%;
+	height: 50px;
+	border: 1px solid;
+	border-radius: 25px;
+	font-size: 18px;
+	font-weight: 700;
+	cursor: pointer;
 }
 
-.form-link a {
-    color: #23a2f6;
-    text-decoration: none;
+input[type="Submit"]:hover {
+	background: #2691d9;
+	color: #e9f4fb;
+	transition: .5s;
 }
 
-/* Styles for the radio buttons */
-.role-options input[type="radio"] {
-    display: none;
+.signup_link {
+	margin: 20px 0;
+	text-align: center;
+	font-size: 16px;
+	color: #666666;
 }
 
-/* Styles for the labels */
-.role-options label {
-    display: inline-block;
-    padding: 8px 20px;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+.signup_link a {
+	color: #2691d9;
+	text-decoration: none;
 }
 
-/* Styles for the labels when the radio button is checked */
-.role-options input[type="radio"]:checked+label {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
+.signup_link a:hover {
+	text-decoration: underline;
 }
 
-
-
-@media (max-width: 768px) {
-    body {
-        margin: 2%;
-    }
-
-    form {
-        padding: 20px 20px;
-        width: 90%;
-    }
-
-    h2 {
-        font-size: 24px;
-    }
-
-    button {
-        margin-top: 30px;
-        padding: 10px 0;
-        font-size: 16px;
-    }
-
-
+.HomeAbout {
+	width: 100vw;
+	height: 25vh;
 }
-
-@media (max-width: 480px) {
-    h2 {
-        font-size: 20px;
-    }
-
-    label {
-        font-size: 14px;
-    }
-
-    input {
-        height: 40px;
-        font-size: 12px;
-    }
-
-    button {
-        font-size: 14px;
-    }
-
-
-}
-
 </style>
+
 </head>
 <body>
 
-	<div class="background">
-		<div class="shape"></div>
-		<div class="shape"></div>
+	<div class="container">
+		<div class="center">
+			<h1>Store Registration</h1>
+			<form action="user" method="post">
+				<input type="hidden" name="task" value="signup" />
+
+				<div class="txt_field">
+					<input type="text" name="city-id" required> <span></span> <label>City
+						ID</label>
+				</div>
+
+				<div class="txt_field">
+					<input type="text" name="name" required> <span></span> <label>Store
+						Name</label>
+				</div>
+				<div class="txt_field">
+					<input type="text" name="mobile-number" required> <span></span>
+					<label>Mobile Number</label>
+				</div>
+				<div class="txt_field">
+					<input type="email" name="email" required> <span></span> <label>Email
+						Address</label>
+				</div>
+				<div class="txt_field">
+					<input type="text" name="gst-number" required> <span></span>
+					<label>GST Number</label>
+				</div>
+				<div class="txt_field">
+					<input type="text" name="address" required> <span></span> <label>Address</label>
+				</div>
+				<div class="txt_field">
+					<input type="password" name="password" required> <span></span>
+					<label>Password</label>
+				</div>
+				<div class="txt_field">
+					<input type="password" name="confirm-password" required> <span></span>
+					<label>Confirm Password</label>
+				</div>
+				<input name="submit" type="Submit" value="Register">
+				<div class="signup_link">
+					Already have an account? <a href="login.jsp">Login Here</a>
+				</div>
+			</form>
+		</div>
 	</div>
-
-	<form action="user" method="post">
-	
-	 <input type="hidden" name = "task" value="signup" />
-	
-	<h2>User Information Form</h2>
-  
-       <input type="text" id="city-id" name="city-id"  value="1" placeholder="City" required><br><br>
-
-        <input type="text" id="name" name="name" placeholder="Name" required><br><br>
-
-        <input type="text" id="mobile-number" name="mobile-number" placeholder="Mobile Number" required><br><br>
-
-        <input type="text" id="gst-number" name="gst-number" placeholder="GST Number" required><br><br>
-
-        <input type="email" id="email" name="email" placeholder="Email" required><br><br>
-
-        <input type="text" id="address" name="address" placeholder="Address" required><br><br>
-
-        <input type="password" id="password" name="password" placeholder="Password" required><br><br>
-
-        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required><br><br>
-
-        <input type="submit" value="Submit">
-    </form>
-
 
 </body>
 </html>

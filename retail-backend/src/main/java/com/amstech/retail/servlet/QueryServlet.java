@@ -40,15 +40,24 @@ public class QueryServlet extends HttpServlet {
 
 
  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	 
+	 
+	 
+		
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String task = request.getParameter("task");
+		System.out.println(task);
+		if (task.equalsIgnoreCase("task")) {
+			save(request, response);
 		
-		doGet(request, response);
-	}	
+	}
+		else {
+			System.out.println("Method not found ");
+		}
+	}
 	
 	public void destroy() {
 		
@@ -61,7 +70,7 @@ public class QueryServlet extends HttpServlet {
 		
 			
 				QueryDTO queryDTO = new QueryDTO();
-				queryDTO.setStoreInfoID(Integer.parseInt(request.getParameter("store-info-id")));
+				queryDTO.setStoreInfoID(Integer.parseInt(request.getParameter("storeInfoId")));
 				queryDTO.setName(request.getParameter("name"));
 				queryDTO.setMobileNumber(request.getParameter("mobile-number"));
 				queryDTO.setDescription(request.getParameter("description"));			
@@ -104,5 +113,8 @@ public class QueryServlet extends HttpServlet {
 		}
 
 	}
+	
+	
+	
 
 }

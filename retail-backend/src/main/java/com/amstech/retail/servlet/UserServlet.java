@@ -41,10 +41,10 @@ public class UserServlet extends HttpServlet {
 		String task = request.getParameter("task");
 		System.out.println(task);
 
-		if (task.equalsIgnoreCase("findById")) {
+		if (task.equalsIgnoreCase("findById")||task.equalsIgnoreCase("itemAddById")||task.equalsIgnoreCase("queryAddById") ) {
 			findById(request, response);
 		}  else {
-			System.out.println("method not found");
+			System.out.println("method not found doget");
 		}
 	}
 
@@ -196,24 +196,45 @@ public class UserServlet extends HttpServlet {
 			UserDTO userDTO = userService.findById(id);
 
 			if (userDTO != null) {
-
+   
 				System.out.println("user id :" + userDTO.getId());
 				System.out.println("user id :" + userDTO.getName());
 				System.out.println("user id :" + userDTO.getAddress());
 				System.out.println("user id :" + userDTO.getEmail());
 				System.out.println("user id :" + userDTO.getGstNumber());
 				System.out.println("user found successfully");
+				
+				
 			
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
-	            
-	            request.setAttribute("userDTOEdit", userDTO);
-//	            
+	           if (request.getParameter("task").equalsIgnoreCase("findById")){
+	        	   RequestDispatcher dispatcher = request.getRequestDispatcher("updateStore.jsp");
+	        	   
+	               request.setAttribute("userDTOEdit", userDTO);
+
+		           
+		            dispatcher.forward(request, response);
+		 	  }else if(request.getParameter("task").equalsIgnoreCase("itemAddById")){
+				 RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
+			       request.setAttribute("userDTOEdit", userDTO);
+
+		           
+		            dispatcher.forward(request, response);
+		            
+			
+		 	  } else if(request.getParameter("task").equalsIgnoreCase("queryAddById")){
+					 RequestDispatcher dispatcher = request.getRequestDispatcher("query.jsp");
+				       request.setAttribute("userDTOEdit", userDTO);
+
+			           
+			            dispatcher.forward(request, response);
+			            
+				
+			 	  } 
 	           
-	            dispatcher.forward(request, response);
-				
-				
-				
-			} else {
+           }
+			
+			
+			else {
 				System.out.println("cannot find user.");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 				request.setAttribute("status", "error");

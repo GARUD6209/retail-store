@@ -10,12 +10,14 @@
 <body>
 
 <% UserDTO userDTO = (UserDTO)request.getAttribute("loginUserDTO"); %>
+<%if(userDTO != null){ %>
 	<form action="user" method = "get">
 		<input type = "hidden" name = "task" value = "findById">
-		<input type = "text" name = "id" value = "1">
+		<input type = "text" name = "id" value = "<%=userDTO.getId() %>">
 		<button type = "submit">Edit</button>
 	</form>
 	
+	<%}%>
 	
 	 <%
 		UserDTO userDTOEdit = (UserDTO) request.getAttribute("userDTOEdit");

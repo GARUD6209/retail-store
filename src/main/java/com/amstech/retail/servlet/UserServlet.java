@@ -7,6 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -41,9 +43,10 @@ public class UserServlet extends HttpServlet {
 		String task = request.getParameter("task");
 		System.out.println(task);
 
-		if (task.equalsIgnoreCase("findById")||task.equalsIgnoreCase("itemAddById")||task.equalsIgnoreCase("queryAddById") ) {
+		if (task.equalsIgnoreCase("findById") || task.equalsIgnoreCase("itemAddById")
+				|| task.equalsIgnoreCase("queryAddById")) {
 			findById(request, response);
-		}  else {
+		} else {
 			System.out.println("method not found doget");
 		}
 	}
@@ -133,11 +136,10 @@ public class UserServlet extends HttpServlet {
 		}
 
 	}
-	
+
 	private String hashPassword(String password) {
 		return BCrypt.hashpw(password, BCrypt.gensalt(12));
 	}
-
 
 //	update user set name = ?, mobile_number = ?, email = ?, gst_number = ?, address = ?,update_datetime = now() where id = ?";
 
@@ -147,7 +149,7 @@ public class UserServlet extends HttpServlet {
 			UserDTO userDTO = new UserDTO();
 			System.out.println("update method invoked");
 			int id = Integer.parseInt(request.getParameter("id"));
-			System.out.println("updateById Id : "+id );
+			System.out.println("updateById Id : " + id);
 			userDTO.setId(id);
 
 			userDTO.setName(request.getParameter("name"));
@@ -187,63 +189,54 @@ public class UserServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 		}
 	}
-	
-	public void findById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	public void findById(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
-			int id =Integer.parseInt(request.getParameter("id"));
-			
+			int id = Integer.parseInt(request.getParameter("id"));
 
 			UserDTO userDTO = userService.findById(id);
 
 			if (userDTO != null) {
-   
+
 				System.out.println("user id :" + userDTO.getId());
 				System.out.println("user id :" + userDTO.getName());
 				System.out.println("user id :" + userDTO.getAddress());
 				System.out.println("user id :" + userDTO.getEmail());
 				System.out.println("user id :" + userDTO.getGstNumber());
 				System.out.println("user found successfully");
-				
-				
-			
-	           if (request.getParameter("task").equalsIgnoreCase("findById")){
-	        	   RequestDispatcher dispatcher = request.getRequestDispatcher("updateStore.jsp");
-	        	   
-	               request.setAttribute("userDTOEdit", userDTO);
 
-		           
-		            dispatcher.forward(request, response);
-		 	  }else if(request.getParameter("task").equalsIgnoreCase("itemAddById")){
-				 RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
-			       request.setAttribute("userDTOEdit", userDTO);
-
-		           
-		            dispatcher.forward(request, response);
-		            
-			
-		 	  } else if(request.getParameter("task").equalsIgnoreCase("queryAddById")){
-					 RequestDispatcher dispatcher = request.getRequestDispatcher("query.jsp");
-				       request.setAttribute("userDTOEdit", userDTO);
-
-			           
-			            dispatcher.forward(request, response);
-			            
 				
-			 	  } 
-	           
-           }
-			
-			
+					RequestDispatcher dispatcher = request.getRequestDispatcher("updateStore.jsp");
+
+					request.setAttribute("userDTOEdit", userDTO);
+
+					dispatcher.forward(request, response);
+//				} else if (request.getParameter("task").equalsIgnoreCase("itemAddById")) {
+//					RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
+//					request.setAttribute("userDTOEdit", userDTO);
+//
+//					dispatcher.forward(request, response);
+//
+//				} else if (request.getParameter("task").equalsIgnoreCase("queryAddById")) {
+//					RequestDispatcher dispatcher = request.getRequestDispatcher("query.jsp");
+//					request.setAttribute("userDTOEdit", userDTO);
+//
+//					dispatcher.forward(request, response);
+//
+//				}
+
+			}
+
 			else {
 				System.out.println("cannot find user.");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 				request.setAttribute("status", "error");
 				request.setAttribute("message", "invalid id");
 				request.setAttribute("redirectURL", "home.jsp");
-				
+
 				dispatcher.forward(request, response);
-				
-				
+
 			}
 
 		} catch (Exception e) {
@@ -253,9 +246,9 @@ public class UserServlet extends HttpServlet {
 			request.setAttribute("status", "error");
 			request.setAttribute("message", "failed to find user by id exception to: " + e.getMessage());
 			request.setAttribute("redirectURL", "home.jsp");
-			
+
 			dispatcher.forward(request, response);
-			
+
 		}
 	}
 
@@ -267,16 +260,19 @@ public class UserServlet extends HttpServlet {
 			String password = request.getParameter("password");
 
 			UserDTO userDTO = userService.findByUsernameAndPassword(username);
+			HttpSession session = request.getSession();
 
 			if (userDTO != null && checkPassword(password, userDTO.getPassword())) {
 				System.out.println("login sucess");
-				// response.sendRedirect("home.jsp");
-				// Get RequestDispatcher for home.jsp
-				RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
 
-				request.setAttribute("loginUserDTO", userDTO);
-
-				dispatcher.forward(request, response);
+				session.setAttribute("auth", userDTO);
+				
+				  RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
+				  
+				  request.setAttribute("loginUserDTO", userDTO);
+				  
+				  dispatcher.forward(request, response);
+				 
 
 			} else {
 				System.out.println("cannot find user.");

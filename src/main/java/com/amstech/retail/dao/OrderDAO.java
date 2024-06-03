@@ -39,7 +39,7 @@ public class OrderDAO {
 		try {
 			// Step 1: Making connection
 			connection = dbUtil.getConnection();
-			connection.setAutoCommit(false); // Ensure autocommit is disabled
+			connection.setAutoCommit(false); // Ensure auto commit is disabled
 
 			// Step 2: Prepared statement for order detail
 			orderDetailPstmt = connection.prepareStatement(ORDER_DETAIL_INSERT_DATA,
@@ -94,7 +94,7 @@ public class OrderDAO {
 			// Step 5: Close connections
 			if (connection != null) {
 				try {
-					connection.setAutoCommit(true); // Reset autocommit to true before closing
+					connection.setAutoCommit(true); // Reset auto commit to true before closing
 					connection.close();
 				} catch (SQLException e) {
 					throw new Exception("Closing connection failed", e);

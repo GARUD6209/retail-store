@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.amstech.retail.dto.ItemDTO;
-import com.amstech.retail.dto.UserDTO;
+
 import com.amstech.retail.util.DBUtil;
 
 public class ItemDAO {

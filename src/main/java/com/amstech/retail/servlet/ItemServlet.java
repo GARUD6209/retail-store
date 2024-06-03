@@ -42,7 +42,7 @@ public class ItemServlet extends HttpServlet {
 
 		if (task.equalsIgnoreCase("findItemById")) {
 			findById(request, response);
-		} else if (task.equalsIgnoreCase("findAllItems")) {
+		} else if (task.equalsIgnoreCase("findAllItems") || task.equalsIgnoreCase("findAllItemsToCreateOrder")) {
 			findByStoreInfoId(request, response);
 		} else if (task.equalsIgnoreCase("deleteItemById")) {
 			deleteById(request, response);
@@ -201,9 +201,11 @@ public class ItemServlet extends HttpServlet {
 	public void findByStoreInfoId(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		try {
+			String task = request.getParameter("task")  ;
+			
 			List<ItemDTO> itemDTOList = itemService.findByStoreInfoId(Integer.parseInt(request.getParameter("id")));
 
-			if (!itemDTOList.isEmpty()) {
+			if (!itemDTOList.isEmpty() && task.equalsIgnoreCase("findAllItems")) {
 				System.out.println("itemDTO OBJECT IS NOT EMPTY");
 
 				RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
@@ -212,7 +214,16 @@ public class ItemServlet extends HttpServlet {
 
 				dispatcher.forward(request, response);
 
-			} else {
+			} else if (!itemDTOList.isEmpty() && task.equalsIgnoreCase("findAllItemsToCreateOrder")) {
+				System.out.println("itemDTOforCreatingodrer OBJECT IS NOT EMPTY");
+
+				RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
+
+				request.setAttribute("itemDTOListForOrder", itemDTOList);
+//				request.setAttribute("redirect","home.jsp");
+				dispatcher.forward(request, response);
+
+			}else {
 				System.out.println("Failed to find itemList data..");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 				request.setAttribute("status", "error");

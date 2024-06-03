@@ -143,6 +143,7 @@
             </div>
             <input type="submit" value="Login">
         </form>
+        
         <div class="signup_link">
             Don't have an account? <a href="signup.jsp">Register Here</a>
         </div>

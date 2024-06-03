@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import com.amstech.retail.dao.QueryDAO;
 import com.amstech.retail.dto.QueryDTO;
-import com.amstech.retail.dto.UserDTO;
+
 import com.amstech.retail.service.QueryService;
 import com.amstech.retail.util.DBUtil;
 

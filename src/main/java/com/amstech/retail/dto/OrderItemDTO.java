@@ -3,18 +3,20 @@ package com.amstech.retail.dto;
 import java.sql.Timestamp;
 
 public class OrderItemDTO {
-	private int id;
+	private int orderItemId;
 	private int orderDetailId;
 	private int itemId;
 	private double priceAtOrder;
-	private Timestamp createDateTime;
-	private Timestamp updateDateTime;
+	private Timestamp ItemCreateDateTime;
+	private Timestamp ItemUpdateDateTime;
 	
-	public int getId() {
-		return id;
+	
+	
+	public int getOrderItemId() {
+		return orderItemId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setOrderItemId(int orderItemId) {
+		this.orderItemId = orderItemId;
 	}
 	public int getOrderDetailId() {
 		return orderDetailId;
@@ -34,18 +36,19 @@ public class OrderItemDTO {
 	public void setPriceAtOrder(double priceAtOrder) {
 		this.priceAtOrder = priceAtOrder;
 	}
-	public Timestamp getCreateDateTime() {
-		return createDateTime;
+	public Timestamp getItemCreateDateTime() {
+		return ItemCreateDateTime;
 	}
-	public void setCreateDateTime(Timestamp createDateTime) {
-		this.createDateTime = createDateTime;
+	public void setItemCreateDateTime(Timestamp itemCreateDateTime) {
+		ItemCreateDateTime = itemCreateDateTime;
 	}
-	public Timestamp getUpdateDateTime() {
-		return updateDateTime;
+	public Timestamp getItemUpdateDateTime() {
+		return ItemUpdateDateTime;
 	}
-	public void setUpdateDateTime(Timestamp updateDateTime) {
-		this.updateDateTime = updateDateTime;
+	public void setItemUpdateDateTime(Timestamp itemUpdateDateTime) {
+		ItemUpdateDateTime = itemUpdateDateTime;
 	}
 	
-		
+	
+	
 }

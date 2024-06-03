@@ -10,69 +10,99 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
-        body {
-            display: flex;
-        }
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #343a40;
-            padding-top: 20px;
-        }
-        .sidebar a, .sidebar form {
-            display: block;
-            width: 100%;
-        }
-        .sidebar a, .sidebar button {
-            padding: 15px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            border: none;
-            background: none;
-        }
-        .sidebar a:hover, .sidebar button:hover {
-            background-color: #575d63;
-        }
-        .sidebar .btn {
-            width: 100%;
-            padding: 0;
-        }
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            width: 100%;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
+  body {
+    display: flex;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #343a40;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar a, .sidebar form {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.sidebar a, .sidebar button {
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    border: none;
+    background-color: #343a40;
+    transition: background-color 0.3s, color 0.3s;
+    display: block;
+    width: 100%;
+}
+
+.sidebar a:hover, .sidebar button:hover {
+    background-color: #575d63;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.sidebar .btn {
+    width: 100%;
+    padding: 15px;
+}
+
+.sidebar .btn-primary {
+ 
+    color: white;
+}
+
+.sidebar .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+}
+
+.container {
+    margin-top: 50px;
+}
     </style>
 </head>
 <body>
 <% UserDTO auth = (UserDTO) session.getAttribute("auth"); %>
 
 <% if (auth != null) { %>
-    <div class="sidebar">
-        <form action="user" method="get">
-            <input type="hidden" name="task" value="findById">
-            <input type="hidden" name="id" value="<%=auth.getId() %>">
-            <button type="submit" class="btn btn-primary">Edit Profile</button>
-        </form>
-        <a href="item.jsp">Add Item</a>
-        <form action="items" method="get">
-            <input type="hidden" name="task" value="findAllItems">
-            <input type="hidden" name="id" value="<%=auth.getId()%>">
-            <button type="submit" class="btn btn-link text-white">Find All Items</button>
-        </form>
-        <a href="query.jsp">Add Query</a>
-    </div>
+   <div class="sidebar">
+    <a href="home.jsp">Home</a>
+    <form action="user" method="get">
+        <input type="hidden" name="task" value="findById">
+        <input type="hidden" name="id" value="<%=auth.getId()%>">
+        <button type="submit" class="btn btn-primary">Edit Profile</button>
+    </form>
+    <form action="order" method="get">
+        <input type="hidden" name="task" value="findAllOrdersByStoreId">
+        <input type="hidden" name="id" value="<%=auth.getId()%>">
+        <button type="submit" class="btn btn-primary">Order History</button>
+    </form>
+    <a href="item.jsp">Add Item</a>
+    <form action="items" method="get">
+        <input type="hidden" name="task" value="findAllItems">
+        <input type="hidden" name="id" value="<%=auth.getId()%>">
+        <button type="submit" class="btn text-white">Find All Items</button>
+    </form>
+    <a href="query.jsp">Add Query</a>
+</div>
 
     <div class="main-content">
         <div class="container">

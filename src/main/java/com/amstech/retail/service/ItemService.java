@@ -3,9 +3,9 @@ package com.amstech.retail.service;
 import java.util.List;
 
 import com.amstech.retail.dao.ItemDAO;
-import com.amstech.retail.dao.UserDAO;
+
 import com.amstech.retail.dto.ItemDTO;
-import com.amstech.retail.dto.UserDTO;
+
 
 public class ItemService {
 

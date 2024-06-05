@@ -3,6 +3,13 @@
 <%@ page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	
+<% 
+response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+response.setHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
+	
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,30 +96,29 @@ body {
 	UserDTO auth = (UserDTO) session.getAttribute("auth");
 	List<ItemDTO> itemDTOList = (List) request.getAttribute("itemDTOList");
 	%>
-	<div class="sidebar">
-    <a href="home.jsp" class="btn btn-primary">Home</a>
-    <form action="user" method="get">
-        <input type="hidden" name="task" value="findById">
-        <input type="hidden" name="id" value="<%=auth.getId()%>">
-        <button type="submit" class="btn btn-primary">Edit Profile</button>
-    </form>
-    <form action="order" method="get">
-        <input type="hidden" name="task" value="findAllOrdersByStoreId">
-        <input type="hidden" name="id" value="<%=auth.getId()%>">
-        <button type="submit" class="btn btn-primary">Order History</button>
-    </form>
-    <a href="item.jsp" class="btn btn-primary">Add Item</a>
-    <form action="items" method="get">
-        <input type="hidden" name="task" value="findAllItems">
-        <input type="hidden" name="id" value="<%=auth.getId()%>">
-        <button type="submit" class="btn btn-primary text-white">Find All Items</button>
-    </form>
-    <a href="query.jsp" class="btn btn-primary">Add Query</a>
-    <form action="logout" method="post">
-            <button 
-            class="btn btn-danger" type="submit">Logout</button>
-        </form>
-</div>
+	 <div class="sidebar">
+        <a href="home.jsp" class="btn btn-primary">Home</a>
+        <form action="user" method="get">
+            <input type="hidden" name="task" value="findById">
+            <input type="hidden" name="id" value="<%=auth.getId()%>">
+            <button type="submit" class="btn btn-primary">Edit Profile</button>
+        </form>
+        <form action="order" method="get">
+            <input type="hidden" name="task" value="findAllOrdersByStoreId">
+            <input type="hidden" name="id" value="<%=auth.getId()%>">
+            <button type="submit" class="btn btn-primary">Order History</button>
+        </form>
+        <a href="item.jsp" class="btn btn-primary">Add Item</a>
+        <form action="items" method="get">
+            <input type="hidden" name="task" value="findAllItems">
+            <input type="hidden" name="id" value="<%=auth.getId()%>">
+            <button type="submit" class="btn btn-primary text-white">Find All Items</button>
+        </form>
+        <a href="query.jsp" class="btn btn-primary">Add Query</a>
+        <form action="logout" method="post">
+            <button class="btn btn-danger" type="submit">Logout</button>
+        </form>
+    </div>
 
 	<div class="main-content">
 		<div class="container">
@@ -120,8 +126,39 @@ body {
 				<div class="col">
 					<h2>
 						Welcome,<%=auth.getName()%></h2>
+						
+						
+						
+						<%
+					ItemDTO editItemDTO = (ItemDTO) request.getAttribute("editItemDTO");
+					%>
 					<%
-					if (auth != null && itemDTOList == null) {
+					if (editItemDTO != null) {
+					%>
+					<form action="items" method="post" class="mt-4">
+						<input type="hidden" name="task" value="updateById"> <input
+							type="hidden" name="itemId" value="<%=editItemDTO.getId()%>">
+						<div class="form-group">
+							<label for="editName">Item Name</label> <input type="text"
+								class="form-control" id="editName" name="name"
+								value="<%=editItemDTO.getName()%>">
+						</div>
+						<div class="form-group">
+							<label for="editPrice">Price</label> <input type="text"
+								class="form-control" id="editPrice" name="current-price"
+								value="<%=editItemDTO.getCurrent_price()%>">
+						</div>
+						<div class="form-group">
+							<label for="editDescription">Description</label> <input
+								type="text" class="form-control" id="editDescription"
+								name="description" value="<%=editItemDTO.getDescription()%>">
+						</div>
+						<button type="submit" class="btn btn-primary">Update</button>
+					</form>
+				
+					<%
+					}
+					else	if (auth != null && itemDTOList == null ) {
 					%>
 					<form action="items" method="post" class="mt-4">
 						<input type="hidden" name="task" value="addItem"> <input
@@ -146,6 +183,8 @@ body {
 					</form>
 					<%
 					}
+					
+					
 					%>
 
 					<%
@@ -197,35 +236,7 @@ body {
 					}
 					%>
 
-					<%
-					ItemDTO editItemDTO = (ItemDTO) request.getAttribute("editItemDTO");
-					%>
-					<%
-					if (editItemDTO != null) {
-					%>
-					<form action="items" method="post" class="mt-4">
-						<input type="hidden" name="task" value="updateById"> <input
-							type="hidden" name="itemId" value="<%=editItemDTO.getId()%>">
-						<div class="form-group">
-							<label for="editName">Item Name</label> <input type="text"
-								class="form-control" id="editName" name="name"
-								value="<%=editItemDTO.getName()%>">
-						</div>
-						<div class="form-group">
-							<label for="editPrice">Price</label> <input type="text"
-								class="form-control" id="editPrice" name="current-price"
-								value="<%=editItemDTO.getCurrent_price()%>">
-						</div>
-						<div class="form-group">
-							<label for="editDescription">Description</label> <input
-								type="text" class="form-control" id="editDescription"
-								name="description" value="<%=editItemDTO.getDescription()%>">
-						</div>
-						<button type="submit" class="btn btn-primary">Update</button>
-					</form>
-					<%
-					}
-					%>
+					
 				</div>
 			</div>
 		</div>

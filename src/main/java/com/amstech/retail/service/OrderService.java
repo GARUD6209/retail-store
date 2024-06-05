@@ -22,4 +22,8 @@ public class OrderService {
 	public List<OrderDTO> findAllOrdersByStoreId(int storeId) throws Exception {
 		return orderDAO.findAllOrdersByStoreId(storeId);
 	}
+
+	public OrderDTO findOrderDetailsByOrderNumber(String orderNumber) throws Exception {
+        return orderDAO.findOrderDetailsByOrderNumber(orderNumber);
+    }
 }

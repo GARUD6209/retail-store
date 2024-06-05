@@ -13,17 +13,20 @@ import com.amstech.retail.dto.OrderDTO;
 import com.amstech.retail.util.DBUtil;
 
 public class OrderDAO {
-	private final String ORDER_DETAIL_INSERT_DATA = "INSERT INTO order_detail(total_amt, status, customer_name, customer_number, create_datetime, update_datetime) VALUES(?, ?, ?, ?, now(), now())";
+	private final String ORDER_DETAIL_INSERT_DATA = "INSERT INTO order_detail(order_number,total_amt, status, customer_name, customer_number, create_datetime, update_datetime) VALUES(?,?, ?, ?, ?, now(), now())";
 	private final String ORDER_ITEM_INSERT_DATA = "INSERT INTO order_item(order_detail_id, item_id, price_at_order,quantity, create_datetime, update_datetime) VALUES(?, ?, ?,?, now(), now())";
 
-	  private final String FIND_ALL_ORDERS_BY_STORE_ID = 
-		        "SELECT od.id, od.total_amt, od.status, od.customer_name, od.customer_number, od.create_datetime, od.update_datetime " +
-		        "FROM order_detail od " +
-		        "JOIN order_item oi ON od.id = oi.order_detail_id " +
-		        "JOIN item i ON oi.item_id = i.id " +
-		        "WHERE i.store_info_id = ? " +
-		        "GROUP BY od.id "+
-		        "ORDER BY od.create_datetime DESC";
+	private final String FIND_ALL_ORDERS_BY_STORE_ID = "SELECT od.id, od.order_number, od.total_amt, od.status, od.customer_name, od.customer_number, od.create_datetime, od.update_datetime "
+			+ "FROM order_detail od " + "JOIN order_item oi ON od.id = oi.order_detail_id "
+			+ "JOIN item i ON oi.item_id = i.id " + "WHERE i.store_info_id = ? " + "GROUP BY od.id "
+			+ "ORDER BY od.create_datetime DESC";
+
+	private final String FIND_ORDER_BY_ORDER_NUMBER = "SELECT * FROM order_detail WHERE order_number = ?";
+	
+	private String FIND_ORDER_ITEM_TABLE_USING_ORDER_DETAIL_ID = "SELECT oi.item_id, oi.quantity, oi.price_at_order, i.name " +
+             "FROM order_item oi " +
+             "JOIN item i ON oi.item_id = i.id " +
+             "WHERE oi.order_detail_id = ?";
 
 	private DBUtil dbUtil;
 
@@ -44,10 +47,11 @@ public class OrderDAO {
 			// Step 2: Prepared statement for order detail
 			orderDetailPstmt = connection.prepareStatement(ORDER_DETAIL_INSERT_DATA,
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			orderDetailPstmt.setDouble(1, orderDTO.getTotalAmount());
-			orderDetailPstmt.setString(2, orderDTO.getStatus());
-			orderDetailPstmt.setString(3, orderDTO.getCustomerName());
-			orderDetailPstmt.setString(4, orderDTO.getCustomerNumber());
+			orderDetailPstmt.setString(1, orderDTO.getOrderNumber());
+			orderDetailPstmt.setDouble(2, orderDTO.getTotalAmount());
+			orderDetailPstmt.setString(3, orderDTO.getStatus());
+			orderDetailPstmt.setString(4, orderDTO.getCustomerName());
+			orderDetailPstmt.setString(5, orderDTO.getCustomerNumber());
 
 			// Step 3: Execute update
 			int count = orderDetailPstmt.executeUpdate();
@@ -117,57 +121,151 @@ public class OrderDAO {
 		}
 	}
 
-	 public List<OrderDTO> findAllOrdersByStoreId(int storeId) throws Exception {
-	        Connection connection = null;
-	        PreparedStatement findOrdersPstmt = null;
-	        ResultSet rs = null;
-	        List<OrderDTO> orders = new ArrayList<>();
+	public List<OrderDTO> findAllOrdersByStoreId(int storeId) throws Exception {
+		Connection connection = null;
+		PreparedStatement findOrdersPstmt = null;
+		ResultSet rs = null;
+		List<OrderDTO> orders = new ArrayList<>();
 
-	        try {
-	            connection = dbUtil.getConnection();
-	            findOrdersPstmt = connection.prepareStatement(FIND_ALL_ORDERS_BY_STORE_ID);
-	            findOrdersPstmt.setInt(1, storeId);
-	            rs = findOrdersPstmt.executeQuery();
+		try {
+			connection = dbUtil.getConnection();
+			findOrdersPstmt = connection.prepareStatement(FIND_ALL_ORDERS_BY_STORE_ID);
+			findOrdersPstmt.setInt(1, storeId);
+			rs = findOrdersPstmt.executeQuery();
 
-	            while (rs.next()) {
-	                OrderDTO orderDTO = new OrderDTO();
-	                orderDTO.setOrderId(rs.getInt("id"));
-	                orderDTO.setTotalAmount(rs.getDouble("total_amt"));
-	                orderDTO.setStatus(rs.getString("status"));
-	                orderDTO.setCustomerName(rs.getString("customer_name"));
-	                orderDTO.setCustomerNumber(rs.getString("customer_number"));
-	                orderDTO.setOCreateDateTime(rs.getTimestamp("create_datetime"));
-	                orderDTO.setOUpdateDateTime(rs.getTimestamp("update_datetime"));
+			while (rs.next()) {
+				OrderDTO orderDTO = new OrderDTO();
+				orderDTO.setOrderId(rs.getInt("id"));
+				orderDTO.setOrderNumber(rs.getString("order_number"));
+				orderDTO.setTotalAmount(rs.getDouble("total_amt"));
+				orderDTO.setStatus(rs.getString("status"));
+				orderDTO.setCustomerName(rs.getString("customer_name"));
+				orderDTO.setCustomerNumber(rs.getString("customer_number"));
+				orderDTO.setOCreateDateTime(rs.getTimestamp("create_datetime"));
+				orderDTO.setOUpdateDateTime(rs.getTimestamp("update_datetime"));
 
-	                orders.add(orderDTO);
-	            }
-	            System.out.println("Orders retrieved from database: " + orders);
-	            return orders;
-	        } catch (Exception e) {
-	            throw e;
-	        } finally {
-	            if (rs != null) {
-	                try {
-	                    rs.close();
-	                } catch (SQLException e) {
-	                    throw new Exception("Closing ResultSet failed", e);
-	                }
-	            }
-	            if (findOrdersPstmt != null) {
-	                try {
-	                    findOrdersPstmt.close();
-	                } catch (SQLException e) {
-	                    throw new Exception("Closing PreparedStatement failed", e);
-	                }
-	            }
-	            if (connection != null) {
-	                try {
-	                    connection.close();
-	                } catch (SQLException e) {
-	                    throw new Exception("Closing connection failed", e);
-	                }
-	            }
-	        }
-	    }
-	
+				orders.add(orderDTO);
+			}
+			System.out.println("Orders retrieved from database: " + orders);
+			return orders;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing ResultSet failed", e);
+				}
+			}
+			if (findOrdersPstmt != null) {
+				try {
+					findOrdersPstmt.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing PreparedStatement failed", e);
+				}
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing connection failed", e);
+				}
+			}
+		}
+	}
+
+	public OrderDTO findOrderDetailsByOrderNumber(String orderNumber) throws Exception {
+		Connection connection = null;
+		PreparedStatement findOrderPstmt = null;
+		PreparedStatement findOrderItemsPstmt = null;
+		ResultSet rsOrder = null;
+		ResultSet rsOrderItems = null;
+
+		try {
+			connection = dbUtil.getConnection();
+
+			// Query to find the order
+			findOrderPstmt = connection.prepareStatement(FIND_ORDER_BY_ORDER_NUMBER);
+			findOrderPstmt.setString(1, orderNumber);
+			rsOrder = findOrderPstmt.executeQuery();
+
+			if (rsOrder.next()) {
+				OrderDTO orderDTO = new OrderDTO();
+				orderDTO.setOrderId(rsOrder.getInt("id"));
+				orderDTO.setOrderNumber(rsOrder.getString("order_number"));
+				orderDTO.setTotalAmount(rsOrder.getDouble("total_amt"));
+				orderDTO.setStatus(rsOrder.getString("status"));
+				orderDTO.setCustomerName(rsOrder.getString("customer_name"));
+				orderDTO.setCustomerNumber(rsOrder.getString("customer_number"));
+				orderDTO.setOCreateDateTime(rsOrder.getTimestamp("create_datetime"));
+				orderDTO.setOUpdateDateTime(rsOrder.getTimestamp("update_datetime"));
+
+				// Query to find the order items
+				findOrderItemsPstmt = connection.prepareStatement(FIND_ORDER_ITEM_TABLE_USING_ORDER_DETAIL_ID);
+				findOrderItemsPstmt.setInt(1, orderDTO.getOrderId());
+				rsOrderItems = findOrderItemsPstmt.executeQuery();
+
+				List<String> itemIds = new ArrayList<>();
+				List<String> itemNames = new ArrayList<>();
+				List<String> quantities = new ArrayList<>();
+				List<String> priceAtOrder = new ArrayList<>();
+
+				while (rsOrderItems.next()) {
+					itemIds.add(rsOrderItems.getString("item_id"));
+					itemNames.add(rsOrderItems.getString("name"));
+					quantities.add(rsOrderItems.getString("quantity"));
+					priceAtOrder.add(rsOrderItems.getString("price_at_order"));
+				}
+
+				orderDTO.setOrderItemIds(itemIds.toArray(new String[0]));
+				orderDTO.setOrderItemNames(itemNames.toArray(new String[0]));
+				orderDTO.setQuantities(quantities.toArray(new String[0]));
+				orderDTO.setPriceAtOrder(priceAtOrder.toArray(new String[0]));
+
+				return orderDTO;
+			} else {
+				return null; // Order not found
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (rsOrderItems != null) {
+				try {
+					rsOrderItems.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing ResultSet for order items failed", e);
+				}
+			}
+			if (rsOrder != null) {
+				try {
+					rsOrder.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing ResultSet for order failed", e);
+				}
+			}
+			if (findOrderItemsPstmt != null) {
+				try {
+					findOrderItemsPstmt.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing PreparedStatement for order items failed", e);
+				}
+			}
+			if (findOrderPstmt != null) {
+				try {
+					findOrderPstmt.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing PreparedStatement for order failed", e);
+				}
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing connection failed", e);
+				}
+			}
+		}
+	}
+
 }

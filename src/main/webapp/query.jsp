@@ -1,5 +1,12 @@
 <%@ page import="com.amstech.retail.dto.UserDTO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<% 
+response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+response.setHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

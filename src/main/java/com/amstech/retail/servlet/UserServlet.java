@@ -263,16 +263,17 @@ public class UserServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 
 			if (userDTO != null && checkPassword(password, userDTO.getPassword())) {
-				System.out.println("login sucess");
+				 System.out.println("login success");
 
-				session.setAttribute("auth", userDTO);
-				
-				  RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
-				  
-				  request.setAttribute("loginUserDTO", userDTO);
-				  
-				  dispatcher.forward(request, response);
-				 
+				    session.setAttribute("auth", userDTO);
+
+				    response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+				    response.setHeader("Pragma", "no-cache");
+				    response.setDateHeader("Expires", 0);
+
+				    RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
+				    request.setAttribute("loginUserDTO", userDTO);
+				    dispatcher.forward(request, response);
 
 			} else {
 				System.out.println("cannot find user.");

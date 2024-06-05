@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +49,7 @@ form .txt_field {
 	margin: 20px 0;
 }
 
-.txt_field input {
+.txt_field input, .txt_field select {
 	width: 100%;
 	padding: 0 5px;
 	height: 40px;
@@ -81,13 +80,12 @@ form .txt_field {
 	transition: .5s;
 }
 
-.txt_field input:focus ~ label, .txt_field input:valid ~ label {
+.txt_field input:focus ~ label, .txt_field input:valid ~ label, .txt_field select:focus ~ label, .txt_field select:valid ~ label {
 	top: -5px;
 	color: #2691d9;
 }
 
-.txt_field input:focus ~ span::before, .txt_field input:valid ~ span::before
-	{
+.txt_field input:focus ~ span::before, .txt_field input:valid ~ span::before, .txt_field select:focus ~ span::before, .txt_field select:valid ~ span::before {
 	width: 100%;
 }
 
@@ -128,10 +126,8 @@ input[type="Submit"]:hover {
 	height: 25vh;
 }
 </style>
-
 </head>
 <body>
-
 	<div class="container">
 		<div class="center">
 			<h1>Store Registration</h1>
@@ -139,8 +135,16 @@ input[type="Submit"]:hover {
 				<input type="hidden" name="task" value="signup" />
 
 				<div class="txt_field">
-					<input type="text" name="city-id" required> <span></span> <label>City
-						ID</label>
+					<select name="city-id" required>
+						<option value="" disabled selected>Select City</option>
+						<option value="1">Indore</option>
+						<option value="2">Bhopal</option>
+						<option value="3">Jabalpur</option>
+						<option value="4">Delhi</option>
+						<option value="5">Mumbai</option>
+					</select>
+					<span></span>
+					
 				</div>
 
 				<div class="txt_field">
@@ -177,6 +181,5 @@ input[type="Submit"]:hover {
 			</form>
 		</div>
 	</div>
-
 </body>
 </html>

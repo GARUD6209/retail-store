@@ -18,6 +18,7 @@ public class OrderDTO {
 	private String[] orderItemIds;
 	private String[] quantities;
 	private String[] orderItemNames;
+	 private String orderNumber; // New field for the unique order number
 	public int getOrderId() {
 		return orderId;
 	}
@@ -109,6 +110,13 @@ public class OrderDTO {
 		this.orderItemNames = orderItemNames;
 	}
 	
+	 public String getOrderNumber() {
+	        return orderNumber;
+	    }
+
+	    public void setOrderNumber(String orderNumber) {
+	        this.orderNumber = orderNumber;
+	    }
 	
 	
 	

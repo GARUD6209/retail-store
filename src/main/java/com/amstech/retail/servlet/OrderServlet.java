@@ -7,13 +7,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import com.amstech.retail.dao.OrderDAO;
 import com.amstech.retail.dto.OrderDTO;
 import com.amstech.retail.service.OrderService;
 import com.amstech.retail.util.DBUtil;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @WebServlet("/order")
 
@@ -39,6 +46,7 @@ public class OrderServlet extends HttpServlet {
 	           if ("findAllOrdersByStoreId".equalsIgnoreCase(task)) {
 	        	      System.out.println("Calling findAllOrdersByStoreId");
 	               findAllOrdersByStoreId(request, response);
+	               
 	           } else {
 	               System.out.println("Method not found");
 	           }
@@ -55,7 +63,9 @@ public class OrderServlet extends HttpServlet {
 
 	    public void saveOrder(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 	        try {
-	            // Retrieve form parameters
+	             
+	        	
+	        	
 	            String customerName = request.getParameter("customerName");
 	            String customerNumber = request.getParameter("customerNumber");
 	            String paymentStatus = request.getParameter("paymentStatus");
@@ -63,6 +73,7 @@ public class OrderServlet extends HttpServlet {
 	            String[] itemIds = request.getParameterValues("itemIds");
 	            String[] quantities = new String[itemIds.length];
 	            String[] priceAtOrder = request.getParameterValues("price-at-order");
+	                             String[] itemName = request.getParameterValues("item-name");
 
 	            for (int i = 0; i < itemIds.length; i++) {
 	                quantities[i] = request.getParameter("quantities_" + itemIds[i]);
@@ -77,23 +88,28 @@ public class OrderServlet extends HttpServlet {
 	            orderDTO.setPriceAtOrder(priceAtOrder);
 	            orderDTO.setOrderItemIds(itemIds);
 	            orderDTO.setQuantities(quantities);
+	            orderDTO.setOrderItemNames(itemName);
 
 	            // Save order using OrderService
 	            int count = orderService.save(orderDTO);
 
 	            if (count > 0) {
+	            
 	                System.out.println("Order created successfully");
-	                RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
-	                request.setAttribute("status", "success");
-	                request.setAttribute("message", "Order created successfully");
-	                request.setAttribute("redirectURL", "home.jsp");
-	                dispatcher.forward(request, response);
+	                
+	                generateOrderPDF(orderDTO, response);
+	                
+//	                RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+//	                request.setAttribute("status", "success");
+//	                request.setAttribute("message", "Order created successfully");
+//	                request.setAttribute("redirectURL", "home.jsp");
+//	                dispatcher.forward(request, response);
 	            } else {
 	                System.out.println("Failed to create order");
 	                RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 	                request.setAttribute("status", "error");
 	                request.setAttribute("message", "Failed to create order");
-	                request.setAttribute("redirectURL", "createOrder.jsp");
+	                request.setAttribute("redirectURL", "home.jsp");
 	                dispatcher.forward(request, response);
 	            }
 	        } catch (Exception e) {
@@ -101,9 +117,45 @@ public class OrderServlet extends HttpServlet {
 	            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 	            request.setAttribute("status", "error");
 	            request.setAttribute("message", "Server error: " + e.getMessage());
-	            request.setAttribute("redirectURL", "createOrder.jsp");
+	            request.setAttribute("redirectURL", "home.jsp");
 	            dispatcher.forward(request, response);
 	        }
+	    }
+	    
+	    private void generateOrderPDF(OrderDTO orderDTO, HttpServletResponse response) throws IOException, DocumentException {
+	        // Create a document
+	        Document document = new Document();
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        PdfWriter.getInstance(document, baos);
+	        document.open();
+
+	        // Add order details to the document
+	        document.add(new Paragraph("Order Details"));
+	        document.add(new Paragraph("Customer Name: " + orderDTO.getCustomerName()));
+	        document.add(new Paragraph("Customer Number: " + orderDTO.getCustomerNumber()));
+	        document.add(new Paragraph("Payment Status: " + orderDTO.getStatus()));
+	        document.add(new Paragraph("Total Amount: " + orderDTO.getTotalAmount()));
+
+	        // Add items
+	        document.add(new Paragraph("Items:"));
+	        for (int i = 0; i < orderDTO.getOrderItemIds().length; i++) {
+	            document.add(new Paragraph("Item Name: " + orderDTO.getOrderItemNames()[i] + ", Quantity: " + orderDTO.getQuantities()[i] + ", Price at Order: " + orderDTO.getPriceAtOrder()[i]));
+	        }
+
+	        document.close();
+
+	        // Set response headers
+	        response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "attachment; filename=order_details.pdf");
+	        response.setContentLength(baos.size());
+
+	        // Write PDF to response
+	        OutputStream os = response.getOutputStream();
+	        baos.writeTo(os);
+	        os.flush();
+	        os.close();
+	        
+	        
 	    }
 	    
 	    private void findAllOrdersByStoreId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -140,6 +192,6 @@ public class OrderServlet extends HttpServlet {
 	        }
 	    }
 
-
+	    
 
 }

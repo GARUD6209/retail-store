@@ -13,22 +13,13 @@ import com.amstech.retail.util.DBUtil;
 
 public class ItemDAO {
 
-//	 Field           | Type          | Null | Key | Default | Extra          |
-//	 +-----------------+---------------+------+-----+---------+----------------+
-//	 | id              | int           | NO   | PRI | NULL    | auto_increment |
-//	 | store_info_id   | int           | NO   | MUL | NULL    |                |
-//	 | name            | varchar(45)   | NO   |     | NULL    |                |
-//	 | current_price   | decimal(10,2) | NO   |     | NULL    |                |
-//	 | description     | text          | YES  |     | NULL    |                |
-//	 | create_datetime | datetime      | NO   |     | NULL    |                |
-//	 | update_datetime | datetime      | NO   |     | NULL    |                |
-//	
 
-	private final String ITEM_INSERT_DATA = "insert into item (store_info_id,name,current_price,description,create_datetime,update_datetime) value (?,?,?,?,now(),now())";
+
+	private final String ITEM_INSERT_DATA = "insert into item (store_info_id,name,current_price,description,create_datetime,update_datetime,status) value (?,?,?,?,now(),now(),true)";
 	private final String ITEM_UPDATE_DATA = "update item set name=?,current_price=?,description=?,update_datetime=now() where id = ?";
 	private final String ITEM_FIND_BY_ID = "select * from item where id =?";
-	private final String ITEM_FIND_BY_STORE_INFO_ID = "select * from item where store_info_id =?";
-	private final String ITEM_DELETE_BY_ID = "delete from item where id = ?";
+	private final String ITEM_FIND_BY_STORE_INFO_ID = "select * from item where store_info_id =? and status = true";
+	private final String ITEM_DELETE_BY_ID = "update item set status = false where id = ?";
 
 	private DBUtil dbUtil;
 

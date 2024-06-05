@@ -87,24 +87,28 @@ body {
 	UserDTO auth = (UserDTO) session.getAttribute("auth");
 	%>
 	<div class="sidebar">
-		<a href="home.jsp">Home</a>
-		<form action="user" method="get">
-			<input type="hidden" name="task" value="findById"> <input
-				type="hidden" name="id" value="<%=auth.getId()%>">
-			<button type="submit" class="btn btn-primary">Edit Profile</button>
-		</form>
-		<form action="order" method="get">
-			<input type="hidden" name="task" value="findAllOrdersByStoreId">
-			<input type="hidden" name="id" value="<%=auth.getId()%>">
-			<button type="submit" class="btn btn-primary">Order History</button>
-		</form>
-		<a href="item.jsp">Add Item</a>
-		<form action="items" method="get">
-			<input type="hidden" name="task" value="findAllItems"> <input
-				type="hidden" name="id" value="<%=auth.getId()%>">
-			<button type="submit" class="btn text-white">Find All Items</button>
-		</form>
-		<a href="query.jsp">Add Query</a>
+    <a href="home.jsp" class="btn btn-primary">Home</a>
+    <form action="user" method="get">
+        <input type="hidden" name="task" value="findById">
+        <input type="hidden" name="id" value="<%=auth.getId()%>">
+        <button type="submit" class="btn btn-primary">Edit Profile</button>
+    </form>
+    <form action="order" method="get">
+        <input type="hidden" name="task" value="findAllOrdersByStoreId">
+        <input type="hidden" name="id" value="<%=auth.getId()%>">
+        <button type="submit" class="btn btn-primary">Order History</button>
+    </form>
+    <a href="item.jsp" class="btn btn-primary">Add Item</a>
+    <form action="items" method="get">
+        <input type="hidden" name="task" value="findAllItems">
+        <input type="hidden" name="id" value="<%=auth.getId()%>">
+        <button type="submit" class="btn btn-primary text-white">Find All Items</button>
+    </form>
+    <a href="query.jsp" class="btn btn-primary">Add Query</a>
+    <form action="logout" method="post">
+            <button 
+            class="btn btn-danger" type="submit">Logout</button>
+        </form>
 	</div>
 	<div class="main-content">
 		<div class="container">
@@ -128,67 +132,66 @@ body {
 					if (itemDTOList != null && !itemDTOList.isEmpty()) {
 					%>
 			<form action="order" method="post" class="mt-4">
-    <input type="hidden" name="task" value="createOrder">
-    <table class="table table-bordered table-hover">
-        <thead class="thead-light">
-            <tr>
-                <th>Select</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% for (ItemDTO itemDTO : itemDTOList) { %>
-            <tr>
-                <td>
-                    <input type="checkbox" name="itemIds" value="<%=itemDTO.getId()%>" class="item-checkbox">
-                </td>
-                <td><%=itemDTO.getName()%></td>
-                <td id="price_<%=itemDTO.getId()%>">
-                    <input type="text" name="price-at-order" value="<%=itemDTO.getCurrent_price()%>">
-                </td>
-                <td><%=itemDTO.getDescription()%></td>
-                <td>
-                    <input type="number" name="quantities_<%=itemDTO.getId()%>" min="1" max="99" value="1" class="item-quantity">
-                </td>
-            </tr>
-            <% } %>
-        </tbody>
-    </table>
-    <h4>Order Summary</h4>
-    <div class="form-group">
-        <label for="customerName">Customer Name</label>
-        <input type="text" id="customerName" name="customerName" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="customerNumber">Customer Number</label>
-        <input type="text" id="customerNumber" name="customerNumber" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="paymentStatus">Payment Status</label>
-        <select id="paymentStatus" name="paymentStatus" class="form-control" required>
-            <option value="Paid">Paid</option>
-            <option value="Pending">Pending</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="totalAmount">Total Amount</label>
-        <input type="text" id="totalAmount" class="form-control" readonly>
-        <input type="hidden" id="totalAmountInput" name="totalAmount">
-    </div>
-    <button type="submit" class="btn btn-success">Create Order</button>
-</form>
+				    <input type="hidden" name="task" value="createOrder">
+				    <table class="table table-bordered table-hover">
+				        <thead class="thead-light">
+				            <tr>
+				                <th>Select</th>
+				                <th>Name</th>
+				                <th>Price</th>
+				                <th>Description</th>
+				                <th>Quantity</th>
+				            </tr>
+				        </thead>
+				        <tbody >
+				            <% for (ItemDTO itemDTO : itemDTOList) { %>
+				            <tr>
+				                <td>
+				                    <input type="checkbox" name="itemIds" value="<%=itemDTO.getId()%>" class="item-checkbox" >
+				                </td>
+				                <td><%=itemDTO.getName()%>
+				                    <input type="hidden" name="item-name" value="<%=itemDTO.getName()%>">
+				                </td>
+				                <td id="price_<%=itemDTO.getId()%>">
+				                    <input type="text" name="price-at-order" value="<%=itemDTO.getCurrent_price()%>">
+				                </td>
+				                <td><%=itemDTO.getDescription()%></td>
+				                <td>
+				                    <input type="number" name="quantities_<%=itemDTO.getId()%>" min="1" max="99" value="1" class="item-quantity">
+				                </td>
+				            </tr>
+				            <% } %>
+				        </tbody>
+				    </table>
+				    <h4>Order Summary</h4>
+				    <div class="form-group">
+				        <label for="customerName">Customer Name</label>
+				        <input type="text" id="customerName" name="customerName" class="form-control" required>
+				    </div>
+				    <div class="form-group">
+				        <label for="customerNumber">Customer Number</label>
+				        <input type="text" id="customerNumber" name="customerNumber" class="form-control" required>
+				    </div>
+				    <div class="form-group">
+				        <label for="paymentStatus">Payment Status</label>
+				        <select id="paymentStatus" name="paymentStatus" class="form-control" required>
+				            <option value="Paid">Paid</option>
+				            <option value="Pending">Pending</option>
+				        </select>
+				    </div>
+				    <div class="form-group">
+				        <label for="totalAmount">Total Amount</label>
+				        <input type="text" id="totalAmount" class="form-control" readonly>
+				        <input type="hidden" id="totalAmountInput" name="totalAmount" >
+				    </div>
+				    <button type="submit" class="btn btn-success">Create Order</button>
+				</form>
 
 
-					<%
-					} else {
-					%>
-					<p>No items found.</p>
 					<%
 					}
 					%>
+					
 				</div>
 			</div>
 		</div>

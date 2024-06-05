@@ -17,6 +17,7 @@ public class OrderDTO {
 	private Timestamp ItemUpdateDateTime;
 	private String[] orderItemIds;
 	private String[] quantities;
+	private String[] orderItemNames;
 	public int getOrderId() {
 		return orderId;
 	}
@@ -101,7 +102,15 @@ public class OrderDTO {
 	public void setQuantities(String[] quantities) {
 		this.quantities = quantities;
 	}
-
+	public String[] getOrderItemNames() {
+		return orderItemNames;
+	}
+	public void setOrderItemNames(String[] orderItemNames) {
+		this.orderItemNames = orderItemNames;
+	}
+	
+	
+	
 	
 
 }

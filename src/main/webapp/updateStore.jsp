@@ -86,8 +86,8 @@ body {
 	<%
 	UserDTO auth = (UserDTO) session.getAttribute("auth");
 	%>
-	<div class="sidebar">
-    <a href="home.jsp">Home</a>
+		<div class="sidebar">
+    <a href="home.jsp" class="btn btn-primary">Home</a>
     <form action="user" method="get">
         <input type="hidden" name="task" value="findById">
         <input type="hidden" name="id" value="<%=auth.getId()%>">
@@ -98,13 +98,17 @@ body {
         <input type="hidden" name="id" value="<%=auth.getId()%>">
         <button type="submit" class="btn btn-primary">Order History</button>
     </form>
-    <a href="item.jsp">Add Item</a>
+    <a href="item.jsp" class="btn btn-primary">Add Item</a>
     <form action="items" method="get">
         <input type="hidden" name="task" value="findAllItems">
         <input type="hidden" name="id" value="<%=auth.getId()%>">
-        <button type="submit" class="btn text-white">Find All Items</button>
+        <button type="submit" class="btn btn-primary text-white">Find All Items</button>
     </form>
-    <a href="query.jsp">Add Query</a>
+    <a href="query.jsp" class="btn btn-primary">Add Query</a>
+    <form action="logout" method="post">
+            <button 
+            class="btn btn-danger" type="submit">Logout</button>
+        </form>
 </div>
 
 	<div class="main-content">

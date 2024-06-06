@@ -134,7 +134,7 @@ response.setDateHeader("Expires", 0);
                     <form action="items" method="get">
                         <input type="hidden" name="task" value="findAllItemsToCreateOrder">
                         <input type="hidden" name="id" value="<%=auth.getId()%>">
-                        <button style="background-color: black" type="submit" class="btn text-white">Create An Order</button>
+                        <button type="submit" class="btn btn-info">Create An Order</button>
                     </form>
 
                     <%

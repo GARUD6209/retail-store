@@ -96,7 +96,7 @@ public class OrderPDFServlet extends HttpServlet {
 
         addTableHeader(itemsTable, "Item Name", labelFont);
         addTableHeader(itemsTable, "Quantity", labelFont);
-        addTableHeader(itemsTable, "Price at Order", labelFont);
+        addTableHeader(itemsTable, "Cost", labelFont);
 
         for (int i = 0; i < orderDTO.getOrderItemIds().length; i++) {
             addTableRow(itemsTable, orderDTO.getOrderItemNames()[i], orderDTO.getQuantities()[i], orderDTO.getPriceAtOrder()[i], valueFont);

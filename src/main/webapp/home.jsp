@@ -215,55 +215,46 @@ response.setDateHeader("Expires", 0);
 
     <!-- Custom Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Script loaded and DOM fully parsed'); // Initial log to check script execution
-
-            function calculateTotal() {
-                console.log('calculateTotal function called'); // Log when the function is called
-
-                const items = document.querySelectorAll('input[name="itemIds"]:checked');
-                console.log('Number of checked items: ' + items.length); // Log number of checked items
-                let totalAmount = 0;
-
-                items.forEach(item => {
-                    const itemId = item.value;
-                    const quantityElement = document.querySelector('input[name="quantities_' + itemId + '"]');
-                    const priceElement = document.querySelector('input[name="price-at-order"]');
-                    console.log('Item ID: ' + itemId); // Log item ID
-                    console.log('Quantity Element:', quantityElement); // Log quantity element
-                    console.log('Price Element:', priceElement); // Log price element
-
-                    if (quantityElement && priceElement) {
-                        const quantity = parseFloat(quantityElement.value);
-                        const price = parseFloat(priceElement.value);
-                        console.log('Quantity: ' + quantity); // Log quantity
-                        console.log('Price: ' + price); // Log price
-
-                        if (!isNaN(quantity) && !isNaN(price)) {
-                            totalAmount += quantity * price;
-                            console.log('Total Amount: ' + totalAmount); // Log total amount
-                        }
-                    }
-                });
-
-                const totalAmountElement = document.getElementById('totalAmount');
-                const totalAmountInputElement = document.getElementById('totalAmountInput');
-                totalAmountElement.value = totalAmount.toFixed(2);
-                totalAmountInputElement.value = totalAmount.toFixed(2);
-
-                console.log('Total Amount set to: ' + totalAmount.toFixed(2)); // Log final total amount
-            }
-
-            document.querySelectorAll('.item-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', calculateTotal);
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script loaded and DOM fully parsed'); // Initial log to check script execution
+        function calculateTotal() {
+            console.log('calculateTotal function called'); // Log when the function is called
+            const items = document.querySelectorAll('input[name="itemIds"]:checked');
+            console.log('Number of checked items: ' + items.length); // Log number of checked items
+            let totalAmount = 0;
+            items.forEach(item => {
+                const itemId = item.value;
+                const quantityElement = document.querySelector('input[name="quantities_' + itemId + '"]');
+                const priceElement = document.querySelector('#price_' + itemId + ' input[name="price-at-order"]');
+                console.log('Processing item ID: ' + itemId); // Log item ID
+                console.log('Found quantity element: ' + (quantityElement !== null)); // Log if quantity element is found
+                console.log('Found price element: ' + (priceElement !== null)); // Log if price element is found
+                if (quantityElement && priceElement) {
+                    const quantity = parseInt(quantityElement.value, 10);
+                    const price = parseFloat(priceElement.value);
+                    console.log('Item ID: ' + itemId + ', Quantity: ' + quantity + ', Price: ' + price); // Log quantity and price
+                    totalAmount += quantity * price;
+                }
             });
-
-            document.querySelectorAll('.item-quantity').forEach(input => {
-                input.addEventListener('input', calculateTotal);
-            });
-
-            calculateTotal(); // Initial calculation
+            console.log('Total Amount: ' + totalAmount);
+            document.getElementById('totalAmount').value = totalAmount.toFixed(2);
+            document.getElementById('totalAmountInput').value = totalAmount.toFixed(2);
+        }
+        const checkboxes = document.querySelectorAll('.item-checkbox');
+        const quantityInputs = document.querySelectorAll('.item-quantity');
+        const priceInputs = document.querySelectorAll('input[name="price-at-order"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', calculateTotal);
         });
+        quantityInputs.forEach(input => {
+            input.addEventListener('input', calculateTotal);
+        });
+        priceInputs.forEach(input => {
+            input.addEventListener('input', calculateTotal);
+        });
+        // Initial calculation
+        calculateTotal();
+    });
     </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.amstech.retail.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.amstech.retail.dao.OrderDAO;
@@ -26,4 +27,9 @@ public class OrderService {
 	public OrderDTO findOrderDetailsByOrderNumber(String orderNumber) throws Exception {
         return orderDAO.findOrderDetailsByOrderNumber(orderNumber);
     }
+	
+	 public List<OrderDTO> findOrdersByDateRange(Date startDate, Date endDate) throws Exception {
+	      
+	        return orderDAO.findOrdersByDateRange(startDate, endDate);
+	    }
 }

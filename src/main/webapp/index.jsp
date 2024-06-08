@@ -191,7 +191,7 @@
 </head>
 <body>
   <header>
-    <div class="logo">InvoiceFlow</div>
+    <div class="logo">RConsole</div>
     <div class="nav-links">
       <a href="login.jsp">Login</a>
       <a href="signup.jsp">Signup</a>
@@ -200,7 +200,7 @@
 
   <div class="hero">
     <div class="hero-content">
-      <h1 style="color: black;">Welcome to InvoiceFlow</h1>
+      <h1 style="color: black;">Welcome to RConsole</h1>
       <p style="color: black;">Streamline your billing process with our powerful tools. Efficiently manage all your bills in one place.</p>
       <div class="cta-buttons">
         <a href="login.jsp">Login</a>

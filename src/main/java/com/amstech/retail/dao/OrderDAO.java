@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,11 +23,11 @@ public class OrderDAO {
 			+ "ORDER BY od.create_datetime DESC";
 
 	private final String FIND_ORDER_BY_ORDER_NUMBER = "SELECT * FROM order_detail WHERE order_number = ?";
-	
-	private String FIND_ORDER_ITEM_TABLE_USING_ORDER_DETAIL_ID = "SELECT oi.item_id, oi.quantity, oi.price_at_order, i.name " +
-             "FROM order_item oi " +
-             "JOIN item i ON oi.item_id = i.id " +
-             "WHERE oi.order_detail_id = ?";
+
+	private String FIND_ORDER_ITEM_TABLE_USING_ORDER_DETAIL_ID = "SELECT oi.item_id, oi.quantity, oi.price_at_order, i.name "
+			+ "FROM order_item oi " + "JOIN item i ON oi.item_id = i.id " + "WHERE oi.order_detail_id = ?";
+
+	private final String FIND_ORDERS_BY_DATE_RANGE = "SELECT * FROM order_detail WHERE create_datetime BETWEEN ? AND ? ORDER BY create_datetime DESC";
 
 	private DBUtil dbUtil;
 
@@ -256,6 +257,72 @@ public class OrderDAO {
 					findOrderPstmt.close();
 				} catch (SQLException e) {
 					throw new Exception("Closing PreparedStatement for order failed", e);
+				}
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing connection failed", e);
+				}
+			}
+		}
+	}
+
+	public List<OrderDTO> findOrdersByDateRange(Date startDate, Date endDate) throws Exception {
+		// Check if the date range is between 1 day and 1 month
+		long millisecondsInADay = 24 * 60 * 60 * 1000;
+		long millisecondsInAMonth = 30L * millisecondsInADay;
+
+		if (endDate.getTime() - startDate.getTime() < millisecondsInADay) {
+			throw new IllegalArgumentException("The date range must be at least 1 day.");
+		}
+		if (endDate.getTime() - startDate.getTime() > millisecondsInAMonth) {
+			throw new IllegalArgumentException("The date range must be at most 1 month.");
+		}
+
+		Connection connection = null;
+		PreparedStatement findOrdersPstmt = null;
+		ResultSet rs = null;
+		List<OrderDTO> orders = new ArrayList<>();
+
+		try {
+			connection = dbUtil.getConnection();
+			findOrdersPstmt = connection.prepareStatement(FIND_ORDERS_BY_DATE_RANGE);
+			findOrdersPstmt.setDate(1, (java.sql.Date) startDate);
+			findOrdersPstmt.setDate(2, (java.sql.Date) endDate);
+			rs = findOrdersPstmt.executeQuery();
+
+			while (rs.next()) {
+				OrderDTO orderDTO = new OrderDTO();
+				orderDTO.setOrderId(rs.getInt("id"));
+				orderDTO.setOrderNumber(rs.getString("order_number"));
+				orderDTO.setTotalAmount(rs.getDouble("total_amt"));
+				orderDTO.setStatus(rs.getString("status"));
+				orderDTO.setCustomerName(rs.getString("customer_name"));
+				orderDTO.setCustomerNumber(rs.getString("customer_number"));
+				orderDTO.setOCreateDateTime(rs.getTimestamp("create_datetime"));
+				orderDTO.setOUpdateDateTime(rs.getTimestamp("update_datetime"));
+
+				orders.add(orderDTO);
+			}
+			System.out.println("Orders retrieved from database: " + orders);
+			return orders;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing ResultSet failed", e);
+				}
+			}
+			if (findOrdersPstmt != null) {
+				try {
+					findOrdersPstmt.close();
+				} catch (SQLException e) {
+					throw new Exception("Closing PreparedStatement failed", e);
 				}
 			}
 			if (connection != null) {

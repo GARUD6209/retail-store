@@ -1,0 +1,81 @@
+/* @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css); */
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
+
+body {
+    font-family: 'Titillium Web', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.main-menu {
+    background: #212121;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 60px;
+    overflow: hidden;
+    transition: width 0.05s linear;
+    z-index: 1000;
+}
+
+.main-menu:hover {
+    width: 230px;
+    overflow: visible;
+}
+
+.main-menu ul {
+    margin-left:-20px;
+    padding: 0;
+    list-style: none;
+}
+
+.main-menu li {
+    display: block;
+    width: 250px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    color: #999;
+    font-size: 14px;
+    text-decoration: none !important;
+    background-color: transparent;
+    padding: 10px 20px;
+    transition: all 0.1s linear;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.nav-item:hover,
+.nav-item:focus {
+    color: #fff;
+    background-color: #000;
+}
+
+.nav-icon {
+    width: 60px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.nav-text {
+    flex: 1;
+}
+
+.logout {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

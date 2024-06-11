@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,12 +81,15 @@ form .txt_field {
 	transition: .5s;
 }
 
-.txt_field input:focus ~ label, .txt_field input:valid ~ label, .txt_field select:focus ~ label, .txt_field select:valid ~ label {
+.txt_field input:focus ~ label, .txt_field input:valid ~ label,
+	.txt_field select:focus ~ label, .txt_field select:valid ~ label {
 	top: -5px;
 	color: #2691d9;
 }
 
-.txt_field input:focus ~ span::before, .txt_field input:valid ~ span::before, .txt_field select:focus ~ span::before, .txt_field select:valid ~ span::before {
+.txt_field input:focus ~ span::before, .txt_field input:valid ~ span::before,
+	.txt_field select:focus ~ span::before, .txt_field select:valid ~ span::before
+	{
 	width: 100%;
 }
 
@@ -142,9 +146,8 @@ input[type="Submit"]:hover {
 						<option value="3">Jabalpur</option>
 						<option value="4">Delhi</option>
 						<option value="5">Mumbai</option>
-					</select>
-					<span></span>
-					
+					</select> <span></span>
+
 				</div>
 
 				<div class="txt_field">

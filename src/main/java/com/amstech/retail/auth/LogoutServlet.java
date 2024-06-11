@@ -1,4 +1,4 @@
-package com.amstech.retail.servlet;
+package com.amstech.retail.auth;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

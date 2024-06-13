@@ -1,5 +1,7 @@
 package com.amstech.retail.service;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.amstech.retail.dao.UserDAO;
 import com.amstech.retail.dto.UserDTO;
 
@@ -35,5 +37,23 @@ public class UserService {
 		return userDAO.findByUsernameAndPassword(username);
 
 	}
+	
+	public int updatePassword(String email, String otp, String newPassword) throws Exception {
+        // Verify OTP before updating password
+        if (userDAO.verifyOTP(email, otp)) {
+            String hashedPassword = hashPassword(newPassword);
+            return userDAO.updatePassword(email, otp, hashedPassword);
+        } else {
+            throw new Exception("Invalid or expired OTP");
+        }
+    }
+
+    public void saveOTP(String email, String otp) throws Exception {
+        userDAO.saveOTP(email, otp);
+    }
+
+    private String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
+    }
 
 }

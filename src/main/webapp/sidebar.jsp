@@ -56,6 +56,17 @@ if (auth != null) {
                 <span class="nav-text">Add Query</span>
             </a>
         </li>
+        <li>
+          <form action="reset-password" method="post">
+          <input type="hidden" name="task" value="requestPasswordReset">
+          <input type="hidden" name="email" value="<%=auth.getEmail()%>">
+                <button type="submit" class="nav-item ">
+                    <i class="fa fa-lock nav-icon"></i>
+                    <span class="nav-text">request otp</span>
+                </button>
+            </form>
+          
+        </li>
     </ul>
     <ul class="logout">
         <li>

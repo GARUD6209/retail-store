@@ -3,19 +3,35 @@ package com.amstech.retail.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 
 import com.amstech.retail.dto.UserDTO;
 import com.amstech.retail.util.DBUtil;
 
 public class UserDAO {
+	
+	//signup
 
 	private final String STORE_INFO_INSERT_DATA = "insert into store_info (city_id,name,mobile_number,email,gst_number,address,password,create_datetime,update_datetime) values(?,?,?,?,?,?,?,now(),now())";
 
+
+	//login
+	
+	private final String STORE_INFO_FIND_BY_MOBILE_EMAIL_PASSWORD = "select * from store_info where (mobile_number=? or email=?) ";
+	
+	//update store_info	
+	
 	private final String STORE_INFO_UPDATE_DATA = "update store_info set name = ?, mobile_number = ?, email = ?, gst_number = ?, address = ?,update_datetime = now() where id = ?";
 
-	private final String STORE_INFO_FIND_BY_MOBILE_EMAIL_PASSWORD = "select * from store_info where (mobile_number=? or email=?) ";
+    private final String STORE_INFO_FIND_BY_ID = "select * from store_info where id = ?";
+    
+    //reset password
 
-	private final String STORE_INFO_FIND_BY_ID = "select * from store_info where id = ?";
+	private final String STORE_INFO_UPDATE_PASSWORD = "UPDATE store_info SET password = ?, update_datetime = NOW() WHERE email = ? AND otp = ?";
+	
+	private final String STORE_INFO_SAVE_OTP = "UPDATE store_info SET otp = ?, otp_creation_time = NOW() WHERE email = ?";
+	
+	private final String STORE_INFO_VERIFY_OTP = "SELECT otp_creation_time FROM store_info WHERE email = ? AND otp = ?";
 
 	private DBUtil dbUtil;
 
@@ -158,6 +174,7 @@ public class UserDAO {
 				userDTO.setName(rs.getString("name"));
 				userDTO.setMobile_number(rs.getString("mobile_number"));
 				userDTO.setPassword(rs.getString("password"));
+				userDTO.setEmail(rs.getString("email"));
 
 			}
 
@@ -171,5 +188,80 @@ public class UserDAO {
 		}
 
 	}
+	
+	
+	 public int updatePassword(String email, String otp, String newPassword) throws Exception {
+	        Connection connection = null;
+	        PreparedStatement pstmt = null;
+
+	        try {
+	            connection = dbUtil.getConnection();
+	            pstmt = connection.prepareStatement(STORE_INFO_UPDATE_PASSWORD);
+	            pstmt.setString(1, newPassword);
+	            pstmt.setString(2, email);
+	            pstmt.setString(3, otp);
+
+	            int count = pstmt.executeUpdate();
+	            return count;
+	        } catch (Exception e) {
+	            throw e;
+	        } finally {
+	            dbUtil.getClose(connection, pstmt);
+	        }
+	    }
+
+	    public void saveOTP(String email, String otp) throws Exception {
+	        Connection connection = null;
+	        PreparedStatement pstmt = null;
+
+	        try {
+	            connection = dbUtil.getConnection();
+	            pstmt = connection.prepareStatement(STORE_INFO_SAVE_OTP);
+	            pstmt.setString(1, otp);
+	            pstmt.setString(2, email);
+
+	            pstmt.executeUpdate();
+	        } catch (Exception e) {
+	            throw e;
+	        } finally {
+	            dbUtil.getClose(connection, pstmt);
+	        }
+	    }
+
+	    public boolean verifyOTP(String email, String otp) throws Exception {
+	        Connection connection = null;
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+
+	        try {
+	            connection = dbUtil.getConnection();
+	            pstmt = connection.prepareStatement(STORE_INFO_VERIFY_OTP);
+	            pstmt.setString(1, email);
+	            pstmt.setString(2, otp);
+	            rs = pstmt.executeQuery();
+
+	            if (rs.next()) {
+	                Timestamp otpCreationTime = rs.getTimestamp(1);
+	                if (otpCreationTime != null) {
+	                    long currentTime = System.currentTimeMillis();
+	                    long otpTime = otpCreationTime.getTime();
+	                    long difference = currentTime - otpTime;
+
+	                    // Check if OTP is within the valid period (15 minutes)
+	                    if (difference <= 15 * 60 * 1000) {
+	                        return true;
+	                    }
+	                }
+	            }
+	            return false;
+	        } catch (Exception e) {
+	            throw e;
+	        } finally {
+	        	if(rs !=null) {
+	        	rs.close();
+	        	}
+	            dbUtil.getClose(connection, pstmt);
+	        }
+	    }
 
 }

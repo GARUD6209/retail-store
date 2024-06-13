@@ -31,11 +31,7 @@ public class SignUpServlet extends HttpServlet {
 		this.userDAO = new UserDAO(dbUtil);
 		this.userService = new UserService(userDAO);
 
-		String smtpHost = "smtp.office365.com"; // Replace with your SMTP host
-		String smtpPort = "587"; // Replace with your SMTP port
-		String smtpAuthUser = "harsh6209@harsh6209.onmicrosoft.com"; // Replace with your email
-		String smtpAuthPassword = "AnitaPatel@4928"; // Replace with your email password
-		this.mailUtil = new MailUtil(smtpHost, smtpPort, smtpAuthUser, smtpAuthPassword);
+			this.mailUtil = new MailUtil();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

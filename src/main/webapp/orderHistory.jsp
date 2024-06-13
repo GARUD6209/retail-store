@@ -36,7 +36,7 @@ response.setDateHeader("Expires", 0);
 			<%@ include file="sidebar.jsp"%>
 
 
-			<div class="main-content fixed-top">
+			<div class="main-content">
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col">
@@ -47,14 +47,14 @@ response.setDateHeader("Expires", 0);
 								<input type="hidden" name="task"
 									value="searchOrderByOrderNumber"> <input type="text"
 									name="orderNumber" class="form-control mr-2"
-									placeholder="Enter Order Number">
+									placeholder="Enter Order Number" required>
 								<button type="submit" class="btn btn-primary">Search</button>
 							</form>
 							<form action="order" method="get" class="form-inline mt-3">
 								<input type="hidden" name="task" value="findOrdersByDateRange">
 								<input type="date" name="startDate" class="form-control mr-2"
-									placeholder="Start Date"> <input type="date"
-									name="endDate" class="form-control mr-2" placeholder="End Date">
+									placeholder="Start Date" required> <input type="date"
+									name="endDate" class="form-control mr-2" placeholder="End Date" required>
 								<button type="submit" class="btn btn-primary">Find
 									Orders</button>
 							</form>
@@ -66,6 +66,7 @@ response.setDateHeader("Expires", 0);
 								<thead class="thead-light">
 									<tr>
 										<th>S.No</th>
+										<!-- <th>order id</th> -->
 										<th>Order Number</th>
 										<th>Total Amount</th>
 										<th>Status</th>
@@ -83,6 +84,7 @@ response.setDateHeader("Expires", 0);
 									%>
 									<tr>
 										<td><%=i++%></td>
+									<%-- 	<td><%=orderDTO.getOrderId()%></td> --%>
 										<td><%=orderDTO.getOrderNumber()%></td>
 										<td><%=orderDTO.getTotalAmount()%></td>
 										<td><%=orderDTO.getStatus()%></td>

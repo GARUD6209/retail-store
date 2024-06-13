@@ -1,5 +1,6 @@
 <%-- sidebar.jsp --%>
 <%@page import="com.amstech.retail.dto.UserDTO"%>
+
 <%
 UserDTO auth = (UserDTO) session.getAttribute("auth");
 if (auth != null) {
@@ -59,7 +60,7 @@ if (auth != null) {
     <ul class="logout">
         <li>
             <form action="logout" method="post">
-                <button type="submit" class="nav-item">
+                <button type="submit" class="nav-item btm-logout">
                     <i class="fa fa-power-off nav-icon"></i>
                     <span class="nav-text">Logout</span>
                 </button>

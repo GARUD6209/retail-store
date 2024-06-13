@@ -26,7 +26,7 @@ response.setDateHeader("Expires", 0);
 		<div class="row">
 			<%@ include file="sidebar.jsp"%>
 
-			<div class="main-content fixed-top">
+			<div class="main-content ">
 				<div class="container">
 					<div class="row">
 						<div class="col">

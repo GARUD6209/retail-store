@@ -135,8 +135,8 @@ input[type="Submit"]:hover {
 	<div class="container">
 		<div class="center">
 			<h1>Store Registration</h1>
-			<form action="user" method="post">
-				<input type="hidden" name="task" value="signup" />
+			<form action="signup" method="post">
+				<!-- <input type="hidden" name="task" value="signup" /> -->
 
 				<div class="txt_field">
 					<select name="city-id" required>

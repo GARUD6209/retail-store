@@ -143,8 +143,8 @@ input[type="Submit"]:hover {
 <body>
 	<div class="center">
 		<h1>Login</h1>
-		<form action="user" method="post">
-			<input type="hidden" name="task" value="login" />
+		<form action="login" method="post">
+		<!-- 	<input type="hidden" name="task" value="login" /> -->
 			<div class="txt_field">
 				<input type="text" id="username" name="username" required> <label
 					for="mobile">Username</label> <span></span>

@@ -79,5 +79,24 @@
     <servlet-name>LogoutServlet</servlet-name>
     <url-pattern>/LogoutServlet</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <description></description>
+    <display-name>LoginServlet</display-name>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.amstech.retail.auth.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SignUpServlet</display-name>
+    <servlet-name>SignUpServlet</servlet-name>
+    <servlet-class>com.amstech.retail.auth.SignUpServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SignUpServlet</servlet-name>
+    <url-pattern>/SignUpServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

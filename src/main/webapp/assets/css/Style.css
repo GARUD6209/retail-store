@@ -6,8 +6,9 @@ body {
     background-color: #f8f9fa;
 }
 
+
 .main-content {
-    margin-left: 250px;
+  
     padding: 20px;
 }
 
@@ -78,4 +79,10 @@ h2 {
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+.btm-logout{
+	 background-color: transparent;
+}
+.btm-logout:hover{
+	background-color: red;
 }

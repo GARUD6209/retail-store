@@ -36,7 +36,7 @@ public class ResetPasswordServlet extends HttpServlet {
 		 String task = request.getParameter("task");
 	        System.out.println(task);
 		
-		if (task.equalsIgnoreCase("requestPasswordReset")) {
+		if (task.equalsIgnoreCase("requestPasswordReset") || task.equalsIgnoreCase("requestPasswordResetFromLogin")) {
             requestPasswordReset(request, response);
         } else if (task.equalsIgnoreCase("updatePassword")) {
             updatePassword(request, response);
@@ -49,6 +49,7 @@ public class ResetPasswordServlet extends HttpServlet {
 	        try {
 	            String email = request.getParameter("email");
 	            System.out.println("In reset password method to send password : "+email);
+	            String task = request.getParameter("task");
 
 	            // Generate OTP
 	            String otp = OTPUtil.generateOTP();
@@ -63,10 +64,18 @@ public class ResetPasswordServlet extends HttpServlet {
 	            mailUtil.sendEmail(email, subject, messageContent);
 	            System.out.println("OTP email sent successfully");
 
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("otpform.jsp");
-	            request.setAttribute("status", "success");
-	            request.setAttribute("message", "OTP sent to your email");
-	            dispatcher.forward(request, response);
+	           if(task.equalsIgnoreCase("requestPasswordReset")) {
+	        	   RequestDispatcher dispatcher = request.getRequestDispatcher("otpform.jsp");
+		            request.setAttribute("status", "success");
+		            request.setAttribute("message", "OTP sent to your email");
+		            dispatcher.forward(request, response);
+	           }else  if(task.equalsIgnoreCase("requestPasswordResetFromLogin")) {
+	        	   RequestDispatcher dispatcher = request.getRequestDispatcher("reset-password.jsp");
+		            request.setAttribute("status", "success");
+		            request.setAttribute("message", "OTP sent to your email");
+		            dispatcher.forward(request, response);
+	           }
+	            
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
@@ -81,10 +90,11 @@ public class ResetPasswordServlet extends HttpServlet {
 	            String email = request.getParameter("email");
 	            String otp = request.getParameter("otp");
 	            String newPassword = request.getParameter("newPassword");
+	            String loginTask =request.getParameter("loginTask");
 
 	            int count = userService.updatePassword(email, otp, newPassword);
 
-	            if (count > 0) {
+	            if (count > 0 ) {
 	                System.out.println("Password updated successfully");
 	                RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 	                request.setAttribute("status", "success");
@@ -92,13 +102,16 @@ public class ResetPasswordServlet extends HttpServlet {
 	                request.setAttribute("redirectURL", "login.jsp");
 
 	                dispatcher.forward(request, response);
-	            } else {
+	            } else  {
 	                System.out.println("Failed to update password");
 	                RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 	                request.setAttribute("status", "error");
-	                request.setAttribute("message", "Failed to update password");
-	                request.setAttribute("redirectURL", "home.jsp");
-
+	                request.setAttribute("message", "invalid otp");
+	                if(loginTask.equalsIgnoreCase("without-auth")) {
+	                request.setAttribute("redirectURL", "reset-password.jsp");
+	                }else if(loginTask.equalsIgnoreCase("with-auth")) {
+	                	   request.setAttribute("redirectURL", "otpform.jsp");
+	                }
 	                dispatcher.forward(request, response);
 	            }
 	        } catch (Exception e) {

@@ -19,7 +19,7 @@ response.setDateHeader("Expires", 0);
 
 </head>
 <body>
-	<nav class="navbar navbar-expand-md">
+	<nav class="navbar navbar-expand-md  fixed-top">
 		
 	</nav>
 	<div class="container-fluid">

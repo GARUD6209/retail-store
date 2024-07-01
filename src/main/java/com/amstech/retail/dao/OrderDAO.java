@@ -147,7 +147,7 @@ public class OrderDAO {
 
 				orders.add(orderDTO);
 			}
-			System.out.println("Orders retrieved from database: " + orders);
+			
 			return orders;
 		} catch (Exception e) {
 			throw e;

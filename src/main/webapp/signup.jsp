@@ -134,7 +134,7 @@ input[type="Submit"]:hover {
 <body>
 	<div class="container">
 		<div class="center">
-			<h1>Store Registration</h1>
+			<h1>Signup for RConsole</h1>
 			<form action="signup" method="post">
 				<!-- <input type="hidden" name="task" value="signup" /> -->
 

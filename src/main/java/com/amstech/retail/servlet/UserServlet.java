@@ -134,12 +134,8 @@ public class UserServlet extends HttpServlet {
 
 			if (userDTO != null) {
 
-				System.out.println("user id :" + userDTO.getId());
-				System.out.println("user id :" + userDTO.getName());
-				System.out.println("user id :" + userDTO.getAddress());
-				System.out.println("user id :" + userDTO.getEmail());
-				System.out.println("user id :" + userDTO.getGstNumber());
-				System.out.println("user found successfully");
+				
+				System.out.println("user found successfully for edit by id");
 
 				
 					RequestDispatcher dispatcher = request.getRequestDispatcher("updateStore.jsp");

@@ -129,35 +129,27 @@ input[type="Submit"]:hover {
 }
 </style>
 
-
-
-
-
-
 </head>
-
-
-
-
 
 <body>
 	<div class="center">
-		<h1>Login</h1>
+		<h1>RConsole Login</h1>
 		<form action="login" method="post">
-		<!-- 	<input type="hidden" name="task" value="login" /> -->
+			<!-- 	<input type="hidden" name="task" value="login" /> -->
 			<div class="txt_field">
 				<input type="text" id="username" name="username" required> <label
 					for="mobile">Username</label> <span></span>
 			</div>
 			<div class="txt_field">
 				<input type="password" id="password" name="password" required>
-				<label for="password">Password</label> <span></span>
+				<label for="password">Password</label><span></span>
 			</div>
 			<input type="submit" value="Login">
 		</form>
 
 		<div class="signup_link">
-			Don't have an account? <a href="signup.jsp">Register Here</a>
+			Don't have an account? <a href="signup.jsp">Register Here</a><br>
+			forget password ? <a href="request-otp.jsp">click here</a>
 		</div>
 	</div>
 </body>

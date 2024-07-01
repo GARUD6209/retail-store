@@ -1,30 +1,17 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="com.amstech.retail.dto.*"%>
-
-<%
-response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-response.setHeader("Pragma", "no-cache");
-response.setDateHeader("Expires", 0);
-%>
-
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard</title>
-
-<%@ include file="csslinks.jsp"%>
-
-
+<meta charset="ISO-8859-1">
+<title>Reset password</title>
+<%@ include file="csslinks.jsp" %>
 </head>
 <body>
-	<nav class="navbar navbar-expand-md  fixed-top"></nav>
-	 <div class="container-fluid">
+<div class="container">
         <div class="row">
-        <%@ include file="sidebar.jsp"%>
-            <div class="col-md-6">
+       
+            <div class="col-md-12">
                 <div class="card mt-5">
                     <div class="card-header text-center">
                         <h3>Reset Password</h3>
@@ -32,7 +19,7 @@ response.setDateHeader("Expires", 0);
                     <div class="card-body">
                         <form action="reset-password" method="post">
                             <input type="hidden" name="task" value="updatePassword" />
-                             <input type="hidden" name="loginTask" value="with-auth" />
+                              <input type="hidden" name="loginTask" value="without-auth" />
 
                             <div class="form-group">
                                 <label for="email">Email</label>
@@ -56,6 +43,5 @@ response.setDateHeader("Expires", 0);
             </div>
         </div>
     </div>
-	
 </body>
 </html>
